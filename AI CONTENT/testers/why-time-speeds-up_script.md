@@ -10,22 +10,22 @@ Your childhood summers felt endless, but this year vanished in a blink. Here's t
 
 ## Script (with timestamps)
 
--  [hook] Your summers as a kid felt like they lasted forever.
--  [hook] So why did this year disappear in a blink?
--  [hook] It's not just you. There's real science behind it.
--  [one] Reason number one: math.
--  [one] When you're five, one year is twenty percent of your whole life.
--  [one] At fifty, it's only two percent. Every year is a smaller slice, so it feels shorter.
--  [turn] But that's not even the scary part.
--  [two] Reason number two: your brain stops taking notes.
--  [two] As a kid, everything is new, so your brain records tons of fresh memories.
--  [two] As an adult? Same commute. Same desk. Same scroll.
--  [two] Routine leaves almost no memories behind, so when you look back, your brain squashes that time down to nothing.
--  [fix] So here's the fix.
--  [fix] Do new things. New routes, new places, new skills.
--  [fix] More novelty means more memories, and more memories make your life feel longer.
--  [end] So, when was the last time you did something for the first time?
--  [end] Follow, before this year disappears too.
+- `00.3s` **[hook]** Your summers as a kid felt like they lasted forever.
+- `03.7s` **[hook]** So why did this year disappear in a blink?
+- `06.5s` **[hook]** It's not just you. There's real science behind it.
+- `09.9s` **[one]** Reason number one: math.
+- `11.9s` **[one]** When you're five, one year is twenty percent of your whole life.
+- `15.4s` **[one]** At fifty, it's only two percent. Every year is a smaller slice, so it feels shorter.
+- `21.0s` **[turn]** But that's not even the scary part.
+- `23.2s` **[two]** Reason number two: your brain stops taking notes.
+- `26.2s` **[two]** As a kid, everything is new, so your brain records tons of fresh memories.
+- `30.8s` **[two]** As an adult? Same commute. Same desk. Same scroll.
+- `34.7s` **[two]** Routine leaves almost no memories behind, so when you look back, your brain squashes that time down to nothing.
+- `41.9s` **[fix]** So here's the fix.
+- `43.3s` **[fix]** Do new things. New routes, new places, new skills.
+- `46.5s` **[fix]** More novelty means more memories, and more memories make your life feel longer.
+- `51.4s` **[end]** So, when was the last time you did something for the first time?
+- `55.0s` **[end]** Follow, before this year disappears too.
 
 ## Retention techniques used
 - **0–3s hook:** relatable pain point + question on screen from frame 1
