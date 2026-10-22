@@ -32,6 +32,13 @@ In 60 seconds:
 {{15–20 comma-separated search phrases: "why do i …", the topic name, the scientific term, "psychology facts", "brain facts", "weird science of being human"}}
 ```
 
+## Upload settings
+- **Category:** Education (alternative: Science & Technology)
+- **Audience:** No, it's not made for kids. "Made for kids" turns off comments, which kills the CTA.
+- **Altered or synthetic content:** No. It's a cartoon with an AI narrator and doesn't show any realistic real person or event.
+- **Language:** English · **Caption certification:** None (captions are burned in)
+- **Playlist:** "Weird Being Human: Brain Quirks"
+
 ## Pinned comment
 ```
 {{Your own short answer to the CTA question, funny and specific}} What's yours?

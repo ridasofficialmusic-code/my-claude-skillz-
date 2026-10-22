@@ -33,6 +33,13 @@ In 60 seconds:
 why do i remember embarrassing moments, cringe memories, embarrassing memories at night, why do i cringe at old memories, 2am thoughts, overthinking at night, spotlight effect, amygdala memory, emotional memory, psychology facts, brain facts, why can't i sleep, intrusive memories, rumination, psychology shorts, weird science of being human, relatable psychology
 ```
 
+## Upload settings
+- **Category:** Education (alternative: Science & Technology)
+- **Audience:** No, it's not made for kids. "Made for kids" turns off comments, which kills the CTA.
+- **Altered or synthetic content:** No. It's a cartoon with an AI narrator and doesn't show any realistic real person or event.
+- **Language:** English · **Caption certification:** None (captions are burned in)
+- **Playlist:** "Weird Being Human: Brain Quirks"
+
 ## Pinned comment (posting it boosts early engagement)
 ```
 Mine: a waiter said "enjoy your meal" and I said "you too" 💀 What's yours?
