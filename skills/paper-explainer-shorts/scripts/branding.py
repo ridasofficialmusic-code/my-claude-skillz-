@@ -59,12 +59,13 @@ def banner(out, name, tagline):
 
 
 def logo(out, name):
+    # Full-bleed teal so any crop (circle, rounded square, small avatar) is clean;
+    # all artwork stays inside a ~300px radius so YouTube's circle mask never touches it.
     S = 800; initials = "".join(w[0] for w in name.upper().split())
-    els = [{"type": "circle", "r": 410, "color": "teal", "x": 400, "y": 400, "seed": 210},
-           {"type": "stars", "x": 400, "y": 170, "w": 520, "h": 90, "count": 5, "color": "mustard", "seed": 12}]
-    els += eye_brain(400, 385, 195, (0.3, 0.1))
-    els.append({"type": "label", "text": initials, "size": 92, "color": "mustard", "fg": "navy", "x": 400, "y": 640, "rot": -4, "seed": 220})
-    img = compose((S, S), "cream", els); img.convert("RGB").save(os.path.join(out, "logo_800x800.png"))
+    els = [{"type": "circle", "r": 330, "color": "navy", "x": 400, "y": 400, "seed": 211, "n": 240, "amp": 0.006}]
+    els += eye_brain(400, 360, 165, (0.3, 0.1))
+    els.append({"type": "label", "text": initials, "size": 82, "color": "mustard", "fg": "navy", "x": 400, "y": 590, "rot": -4, "seed": 220})
+    img = compose((S, S), "teal", els); img.convert("RGB").save(os.path.join(out, "logo_800x800.png"))
     m = Image.new("L", (S, S), 0); ImageDraw.Draw(m).ellipse((0, 0, S, S), fill=255)
     prev = Image.new("RGBA", (S, S), (255, 255, 255, 0)); prev.paste(img, (0, 0), m)
     sm = prev.resize((98, 98), Image.LANCZOS); row = Image.new("RGBA", (S + 140, S), (255, 255, 255, 255))

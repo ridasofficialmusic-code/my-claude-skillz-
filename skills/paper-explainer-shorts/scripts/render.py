@@ -95,8 +95,8 @@ class Canvas:
             s.d.polygon([(x + (3 if x > cx else -3), y + (3 if y > cy else -3)) for x, y in pts], fill=PAPER)
         s.d.polygon(pts, fill=col(color))
 
-    def blob(s, cx, cy, r, color, seed=0, fringe=True, sx=1.0, sy=1.0):
-        s.poly([(cx + x, cy + y) for x, y in blob_poly(r, seed, sx=sx, sy=sy)], color, fringe)
+    def blob(s, cx, cy, r, color, seed=0, fringe=True, sx=1.0, sy=1.0, n=60, amp=0.035):
+        s.poly([(cx + x, cy + y) for x, y in blob_poly(r, seed, n, amp, sx, sy)], color, fringe)
 
     def rect(s, x0, y0, w, h, color, seed=0, fringe=True, step=14, amp=4):
         s.poly([(x0 + x, y0 + y) for x, y in torn_poly(w, h, seed, step, amp)], color, fringe)
@@ -155,7 +155,8 @@ def _panel(e, t):
 
 @prefab("circle")
 def _circle(e, t):
-    r = e.get("r", 150); cv = Canvas(2 * r + 40, 2 * r + 40); cv.blob(0, 0, r, e.get("color", "mustard"), e.get("seed", 2)); return cv.im
+    r = e.get("r", 150); cv = Canvas(2 * r + 40, 2 * r + 40)
+    cv.blob(0, 0, r, e.get("color", "mustard"), e.get("seed", 2), n=e.get("n", 60), amp=e.get("amp", 0.035)); return cv.im
 
 
 @prefab("star")
