@@ -1,0 +1,692 @@
+{
+ "topic": "Why your brain replays embarrassing moments from years ago",
+ "voice": "af_heart",
+ "speed": 1.08,
+ "gap_line": 0.3,
+ "gap_scene": 0.55,
+ "duration": 60.0,
+ "scenes": [
+  {
+   "name": "hook",
+   "bg": "night",
+   "lines": [
+    "It's 2am. You're trying to sleep, and your brain replays that embarrassing thing you said ten years ago.",
+    "Why does it do this?",
+    "It's not random. Your brain thinks it's helping you."
+   ],
+   "elements": [
+    {
+     "type": "stars",
+     "x": 540,
+     "y": 330,
+     "w": 900,
+     "h": 320
+    },
+    {
+     "type": "moon",
+     "x": 860,
+     "y": 330,
+     "r": 110
+    },
+    {
+     "type": "label",
+     "text": "2:00 AM",
+     "size": 110,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 330,
+     "y": 300,
+     "rot": -4
+    },
+    {
+     "type": "bed",
+     "x": 540,
+     "y": 1010,
+     "r": 105
+    },
+    {
+     "type": "bubble",
+     "style": "thought",
+     "text": "Waiter: \"Enjoy your meal!\" Me: \"YOU TOO!\"",
+     "size": 60,
+     "maxw": 560,
+     "x": 610,
+     "y": 630,
+     "at": "replays",
+     "out": "Why-0.15"
+    },
+    {
+     "type": "label",
+     "text": "10 YEARS AGO",
+     "font": "marker",
+     "size": 54,
+     "color": "pink",
+     "fg": "navy",
+     "x": 820,
+     "y": 440,
+     "rot": 8,
+     "at": "ten",
+     "out": "Why-0.15"
+    },
+    {
+     "type": "label",
+     "text": "WHY?!",
+     "size": 190,
+     "color": "terra",
+     "fg": "paper",
+     "x": 540,
+     "y": 640,
+     "rot": -5,
+     "loop": "shake",
+     "at": "Why",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "label",
+     "text": "NOT RANDOM",
+     "size": 96,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 560,
+     "rot": 3,
+     "at": "random"
+    },
+    {
+     "type": "label",
+     "text": "it's \"helping\"",
+     "font": "marker",
+     "size": 80,
+     "color": "pink",
+     "fg": "navy",
+     "x": 560,
+     "y": 730,
+     "rot": -4,
+     "at": "helping-0.2"
+    }
+   ]
+  },
+  {
+   "name": "reason1",
+   "bg": "cream",
+   "lines": [
+    "Reason number one: emotion is a bookmark.",
+    "When you feel embarrassed, your amygdala, the brain's alarm system, goes off.",
+    "It tags that moment as important, so it's stored stronger than a normal day."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "REASON #1",
+     "size": 96,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 290,
+     "rot": -3
+    },
+    {
+     "type": "label",
+     "text": "EMOTION = BOOKMARK",
+     "size": 70,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 430,
+     "rot": 2,
+     "at": "emotion"
+    },
+    {
+     "type": "brain",
+     "x": 540,
+     "y": 840,
+     "r": 220,
+     "loop": "bob",
+     "at": "emotion"
+    },
+    {
+     "type": "alarm",
+     "x": 540,
+     "y": 650,
+     "r": 80,
+     "loop": "shake",
+     "shake_for": 3,
+     "at": "amygdala"
+    },
+    {
+     "type": "label",
+     "text": "AMYGDALA",
+     "font": "marker",
+     "size": 66,
+     "color": "pink",
+     "fg": "navy",
+     "x": 300,
+     "y": 1150,
+     "rot": -5,
+     "at": "amygdala",
+     "out": "tags-0.1"
+    },
+    {
+     "type": "bookmark",
+     "text": "!",
+     "x": 830,
+     "y": 760,
+     "w": 150,
+     "h": 260,
+     "rot": 10,
+     "at": "tags"
+    },
+    {
+     "type": "label",
+     "text": "SAVE: HIGH PRIORITY",
+     "size": 58,
+     "color": "terra",
+     "fg": "paper",
+     "x": 540,
+     "y": 1170,
+     "rot": -2,
+     "at": "stored"
+    }
+   ]
+  },
+  {
+   "name": "turn",
+   "bg": "red",
+   "lines": [
+    "But that's not what keeps it alive."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "BUT...",
+     "size": 220,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 700,
+     "rot": -4,
+     "loop": "shake"
+    },
+    {
+     "type": "label",
+     "text": "WHAT KEEPS IT ALIVE?",
+     "size": 64,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 920,
+     "rot": 3,
+     "at": "keeps"
+    }
+   ]
+  },
+  {
+   "name": "reason2",
+   "bg": "cream",
+   "lines": [
+    "Reason number two: you keep replaying it.",
+    "Every time you relive it, the memory gets even stronger.",
+    "Your brain figures: we keep coming back to this, so it must matter."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "REASON #2",
+     "size": 96,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 290,
+     "rot": 3
+    },
+    {
+     "type": "label",
+     "text": "YOU REPLAY IT",
+     "size": 76,
+     "color": "terra",
+     "fg": "paper",
+     "x": 540,
+     "y": 430,
+     "rot": -2,
+     "at": "replaying"
+    },
+    {
+     "type": "replay",
+     "x": 540,
+     "y": 790,
+     "r": 300,
+     "loop": "spin",
+     "spin_speed": -120,
+     "at": "replaying+0.3"
+    },
+    {
+     "type": "play_card",
+     "text": "cringe_moment.mp4",
+     "x": 540,
+     "y": 820,
+     "at": "number+0.1"
+    },
+    {
+     "type": "counter",
+     "prefix": "REPLAYS: ",
+     "from": 1,
+     "to": 4827,
+     "dur": 2.6,
+     "size": 66,
+     "color": "mustard",
+     "x": 540,
+     "y": 1190,
+     "at": "Every",
+     "out": "figures-0.2"
+    },
+    {
+     "type": "label",
+     "text": "STRONGER",
+     "size": 66,
+     "color": "green",
+     "fg": "paper",
+     "x": 840,
+     "y": 560,
+     "rot": 9,
+     "at": "stronger"
+    },
+    {
+     "type": "brain",
+     "x": 230,
+     "y": 1180,
+     "r": 95,
+     "at": "figures"
+    },
+    {
+     "type": "bubble",
+     "text": "it must matter!",
+     "size": 60,
+     "x": 640,
+     "y": 1120,
+     "tail": "left",
+     "at": "figures+0.2"
+    }
+   ]
+  },
+  {
+   "name": "fix",
+   "bg": "sky",
+   "lines": [
+    "Now here's the good news.",
+    "Psychologists call this the spotlight effect: we massively overestimate how much people notice us.",
+    "In one study, students in an embarrassing T-shirt guessed half the room noticed. Only about a quarter did.",
+    "That moment you still cringe about? Everyone else forgot it years ago."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "THE GOOD NEWS",
+     "size": 92,
+     "color": "green",
+     "fg": "paper",
+     "x": 540,
+     "y": 290,
+     "rot": -3
+    },
+    {
+     "type": "badge",
+     "kind": "check",
+     "r": 150,
+     "x": 540,
+     "y": 780,
+     "at": 0.35,
+     "out": "spotlight-0.1"
+    },
+    {
+     "type": "spotlight",
+     "x": 540,
+     "y": 790,
+     "w": 640,
+     "h": 900,
+     "color": "paper",
+     "at": "spotlight",
+     "out": "line2-0.15"
+    },
+    {
+     "type": "label",
+     "text": "SPOTLIGHT EFFECT",
+     "size": 74,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 430,
+     "rot": 2,
+     "at": "spotlight",
+     "out": "line2-0.15"
+    },
+    {
+     "type": "person",
+     "mood": "cringe",
+     "x": 540,
+     "y": 950,
+     "r": 105,
+     "color": "terra",
+     "at": "spotlight",
+     "out": "line2-0.15"
+    },
+    {
+     "type": "person",
+     "mood": "neutral",
+     "x": 160,
+     "y": 1060,
+     "r": 70,
+     "color": "teal",
+     "hair": "ink",
+     "at": "notice",
+     "out": "line2-0.15"
+    },
+    {
+     "type": "person",
+     "mood": "neutral",
+     "x": 920,
+     "y": 1060,
+     "r": 70,
+     "color": "mustard",
+     "hair": "terra",
+     "at": "notice+0.1",
+     "out": "line2-0.15"
+    },
+    {
+     "type": "tshirt",
+     "text": "EMBARRASSING\nT-SHIRT",
+     "size": 38,
+     "s": 1.25,
+     "x": 540,
+     "y": 780,
+     "at": "students",
+     "out": "guessed-0.1"
+    },
+    {
+     "type": "bars",
+     "items": [
+      {
+       "label": "GUESSED",
+       "value": 50,
+       "color": "terra"
+      },
+      {
+       "label": "ACTUAL",
+       "value": 25,
+       "value_text": "~25%",
+       "color": "green"
+      }
+     ],
+     "stagger": 2.2,
+     "x": 540,
+     "y": 780,
+     "at": "guessed",
+     "out": "line3-0.15"
+    },
+    {
+     "type": "person",
+     "mood": "cringe",
+     "x": 540,
+     "y": 930,
+     "r": 105,
+     "color": "terra",
+     "at": "line3",
+     "out": "Everyone-0.1"
+    },
+    {
+     "type": "label",
+     "text": "STILL CRINGING?",
+     "size": 72,
+     "color": "pink",
+     "fg": "navy",
+     "x": 540,
+     "y": 440,
+     "rot": -3,
+     "at": "line3+0.2",
+     "out": "Everyone-0.1"
+    },
+    {
+     "type": "label",
+     "text": "EVERYONE FORGOT",
+     "size": 80,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 440,
+     "rot": 2,
+     "at": "Everyone"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 220,
+     "y": 930,
+     "r": 80,
+     "color": "teal",
+     "at": "Everyone"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 540,
+     "y": 930,
+     "r": 80,
+     "color": "terra",
+     "hair": "ink",
+     "at": "Everyone+0.15"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 860,
+     "y": 930,
+     "r": 80,
+     "color": "mustard",
+     "hair": "terra",
+     "at": "Everyone+0.3"
+    },
+    {
+     "type": "bubble",
+     "text": "what moment?",
+     "size": 50,
+     "x": 640,
+     "y": 620,
+     "tail": "left",
+     "at": "forgot"
+    }
+   ]
+  },
+  {
+   "name": "cta",
+   "bg": "teal",
+   "lines": [
+    "What's the cringe memory your brain won't let go of? Tell me in the comments.",
+    "And follow for more weird science of being human."
+   ],
+   "elements": [
+    {
+     "type": "comment",
+     "user": "@you",
+     "text": "ok so in 7th grade I...",
+     "x": 540,
+     "y": 560,
+     "w": 860,
+     "anim": "slide_left"
+    },
+    {
+     "type": "label",
+     "text": "YOUR CRINGE MEMORY?",
+     "size": 70,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 330,
+     "rot": -3
+    },
+    {
+     "type": "arrow",
+     "x": 540,
+     "y": 850,
+     "len": 220,
+     "rot": -90,
+     "color": "mustard",
+     "at": "comments",
+     "loop": "bob"
+    },
+    {
+     "type": "label",
+     "text": "COMMENT BELOW",
+     "size": 64,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 1010,
+     "rot": 2,
+     "at": "comments"
+    },
+    {
+     "type": "follow",
+     "size": 92,
+     "x": 540,
+     "y": 1180,
+     "loop": "pulse",
+     "at": "follow"
+    },
+    {
+     "type": "label",
+     "text": "weird science of being human",
+     "font": "marker",
+     "size": 52,
+     "color": "pink",
+     "fg": "navy",
+     "x": 540,
+     "y": 1310,
+     "rot": -2,
+     "at": "weird",
+     "jitter": false
+    }
+   ]
+  }
+ ],
+ "thumbnail": {
+  "bg": "night",
+  "vertical": [
+   {
+    "type": "stars",
+    "x": 540,
+    "y": 300,
+    "w": 950,
+    "h": 350
+   },
+   {
+    "type": "moon",
+    "x": 880,
+    "y": 260,
+    "r": 100
+   },
+   {
+    "type": "label",
+    "text": "WHY YOU STILL",
+    "size": 92,
+    "color": "paper",
+    "fg": "navy",
+    "x": 540,
+    "y": 470,
+    "rot": -3
+   },
+   {
+    "type": "label",
+    "text": "CRINGE",
+    "size": 210,
+    "color": "terra",
+    "fg": "paper",
+    "x": 540,
+    "y": 660,
+    "rot": 2
+   },
+   {
+    "type": "label",
+    "text": "AT 2AM",
+    "size": 100,
+    "color": "mustard",
+    "fg": "navy",
+    "x": 540,
+    "y": 860,
+    "rot": -5
+   },
+   {
+    "type": "bubble",
+    "style": "thought",
+    "text": "\"YOU TOO!\"",
+    "size": 66,
+    "x": 810,
+    "y": 1000,
+    "tail": "left"
+   },
+   {
+    "type": "person",
+    "mood": "cringe",
+    "x": 540,
+    "y": 1420,
+    "r": 190,
+    "color": "teal"
+   }
+  ],
+  "horizontal": [
+   {
+    "type": "stars",
+    "x": 640,
+    "y": 120,
+    "w": 1200,
+    "h": 200
+   },
+   {
+    "type": "person",
+    "mood": "cringe",
+    "x": 270,
+    "y": 520,
+    "r": 135,
+    "color": "teal"
+   },
+   {
+    "type": "bubble",
+    "style": "thought",
+    "text": "\"YOU TOO!\"",
+    "size": 50,
+    "x": 420,
+    "y": 125,
+    "tail": "left"
+   },
+   {
+    "type": "label",
+    "text": "WHY YOU STILL",
+    "size": 66,
+    "color": "paper",
+    "fg": "navy",
+    "x": 950,
+    "y": 240,
+    "rot": -3
+   },
+   {
+    "type": "label",
+    "text": "CRINGE",
+    "size": 150,
+    "color": "terra",
+    "fg": "paper",
+    "x": 950,
+    "y": 400,
+    "rot": 2
+   },
+   {
+    "type": "label",
+    "text": "AT 2AM",
+    "size": 76,
+    "color": "mustard",
+    "fg": "navy",
+    "x": 980,
+    "y": 570,
+    "rot": -5
+   }
+  ]
+ },
+ "slug": "why-you-still-cringe"
+}
