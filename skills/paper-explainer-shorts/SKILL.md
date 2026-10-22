@@ -63,3 +63,6 @@ Save the files to `AI CONTENT/testers/NN-<slug>/` in the repo (the next number i
 - Palette names: `cream paper mustard terra teal navy sky pink red green night ink`.
 - Recurring beats: a `REASON #1` / `REASON #2` navy label, a `BUT...` turn on a red background, a green `THE GOOD NEWS` label, and a CTA on teal with a comment card plus a pulsing `+ FOLLOW` button.
 - Sign-off line: "follow for more weird science of being human."
+
+## Channel art
+`python3 scripts/branding.py "AI CONTENT/channel-branding" "Weird Being Human" "the weird science of why you do what you do"` renders `banner_2560x1440.png` (title kept inside YouTube's 1546×423 safe area; check it with `banner_safe-area-check.png`) and `logo_800x800.png` (eye-brain mascot plus initials, circle-safe; `logo_circle-preview.png` shows it at 98 px).
