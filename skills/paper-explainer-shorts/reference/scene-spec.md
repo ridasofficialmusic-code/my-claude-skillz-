@@ -52,6 +52,10 @@ Colours: `cream paper mustard terra teal navy sky pink red green night ink skin 
 | `spotlight` | `w`, `h`, `color` | translucent cone, no shadow; put it before the person in the list |
 | `follow` | `text` ("FOLLOW"), `size`, `color` | CTA button; use `loop: pulse` |
 | `comment` | `user`, `text`, `w`, `avatar` | fake comment card for the CTA |
+| `note` | `kind` `single`/`double`, `r` (50), `color` | music note; scatter them with `loop: bob` |
+| `worm` | `r` (55), `segments` (6), `color`, `headphones` (true) | wiggling earworm mascot |
+| `crossword` | `n` (5), `cell` (90) | puzzle grid spelling EAR / WORM |
+| `shower` | `s`, `color`, `water` | shower head with falling drops (dynamic) |
 | `calendar` | `top`, `text`, `w`, `h`, `color` | tear-off calendar page |
 
 Elements draw in list order (later = on top). Need a new prefab? Add a function to `scripts/render.py` with `@prefab("name")` (or `dynamic=True` if it animates). Build it from `Canvas.blob/rect/poly/line/text` so it keeps the torn-paper look.

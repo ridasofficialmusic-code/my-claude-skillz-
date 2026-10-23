@@ -5,7 +5,7 @@ Strongest hooks are listed first. Check off topics as they're made.
 - [x] Why your brain replays embarrassing moments at 2AM (amygdala/emotional memory, rehearsal, spotlight effect)
 - [x] Why time speeds up as you get older (proportional theory, novelty and memory density)
 - [ ] Why you walk into a room and forget why you came (doorway effect / event boundaries, Radvansky)
-- [ ] Why songs get stuck in your head (earworms, the Zeigarnik effect, chewing gum study)
+- [x] Why songs get stuck in your head (earworm features, low-load mind wandering, chewing gum + puzzle fixes)
 - [ ] Why you feel exhausted after doing nothing all day (decision fatigue debate, boredom, low arousal, screens)
 - [ ] Why the Sunday-night dread hits (anticipatory anxiety, transitions)
 - [ ] Why you replay arguments in the shower (counterfactual thinking, default mode network)

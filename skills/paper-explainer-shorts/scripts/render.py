@@ -404,6 +404,59 @@ def _calendar(e, t):
     cv.text(0, h * 0.12, e.get("text", "JAN"), "bold", e.get("size", h * 0.3), "navy"); return cv.im
 
 
+@prefab("note")
+def _note(e, t):
+    r = e.get("r", 50); c = e.get("color", "navy"); double = e.get("kind", "single") == "double"
+    cv = Canvas(r * (5.2 if double else 3.4), r * 5.2); hy = 1.6 * r; xs = (-1.2 * r, 1.2 * r) if double else (-0.4 * r,)
+    for i, x in enumerate(xs):
+        cv.poly([(x + a * 0.95 - b * 0.35, hy + a * 0.35 + b * 0.75) for a, b in blob_poly(r, 140 + i, 40, 0.02)], c)
+        cv.rect(x + 0.85 * r, -2.2 * r, 0.32 * r, hy + 2.1 * r, c, 142 + i, False, 10, 1)
+    if double: cv.poly([(xs[0] + 0.85 * r, -2.3 * r), (xs[1] + 1.17 * r, -2.6 * r), (xs[1] + 1.17 * r, -1.95 * r), (xs[0] + 0.85 * r, -1.65 * r)], c, False)
+    else: cv.poly([(0.45 * r, -2.3 * r), (1.5 * r, -1.2 * r), (1.3 * r, -0.5 * r), (0.75 * r, -1.2 * r)], c, False)
+    return cv.im
+
+
+@prefab("worm", dynamic=True)
+def _worm(e, t):
+    r = e.get("r", 55); n = e.get("segments", 6); c = e.get("color", "pink"); cv = Canvas(r * (2.1 * n + 3), r * 5)
+    dark = tuple(int(v * 0.85) for v in col(c))
+    for i in range(n - 1, -1, -1):
+        x = (i - (n - 1) / 2) * 1.5 * r; y = 0.45 * r * math.sin(t * 6 - i * 0.9)
+        cv.blob(x, y, r * (0.8 + 0.2 * (i == n - 1)), c if i % 2 else dark, 150 + i, i == n - 1)
+    hx = (n - 1) / 2 * 1.5 * r; hy = 0.45 * r * math.sin(t * 6 - (n - 1) * 0.9)
+    for dx in (-0.3, 0.3): cv.blob(hx + dx * r + 0.15 * r, hy - 0.2 * r, 0.24 * r, "paper", 160, False); cv.blob(hx + dx * r + 0.22 * r, hy - 0.2 * r, 0.11 * r, "ink", 161, False)
+    cv.line([(hx - 0.25 * r + i * 0.07 * r, hy + 0.35 * r + 0.1 * r * math.sin(i / 7 * math.pi)) for i in range(8)], "ink", 0.08 * r)
+    if e.get("headphones", True):
+        cv.line([(hx + 1.15 * r * math.cos(math.radians(a)), hy - 0.1 * r - 1.15 * r * math.sin(math.radians(a))) for a in range(10, 171, 8)], "navy", 0.2 * r)
+        for sx in (-1, 1): cv.rect(hx + sx * 1.15 * r - 0.25 * r, hy - 0.4 * r, 0.5 * r, 0.75 * r, "mustard", 162 + sx, False, 8, 1)
+    return cv.im
+
+
+@prefab("crossword")
+def _crossword(e, t):
+    n, cell = e.get("n", 5), e.get("cell", 90); cv = Canvas(n * cell + 60, n * cell + 60); o = -n * cell / 2
+    cv.rect(o - 12, o - 12, n * cell + 24, n * cell + 24, "paper", 170)
+    black = {(0, 3), (1, 1), (1, 3), (3, 1), (3, 3), (4, 1)}; letters = {(0, 0): "E", (0, 1): "A", (0, 2): "R", (2, 0): "W", (2, 1): "O", (2, 2): "R", (2, 3): "M"}
+    for i in range(n):
+        for j in range(n):
+            x, y = o + j * cell, o + i * cell
+            cv.d.rectangle([x + cv.ox, y + cv.oy, x + cell + cv.ox, y + cell + cv.oy], fill=col("navy") if (i, j) in black else col("paper"), outline=col("navy"), width=4)
+            if (i, j) in letters: cv.text(x + cell / 2, y + cell / 2 + 4, letters[(i, j)], "marker", cell * 0.6, "terra")
+    return cv.im
+
+
+@prefab("shower", dynamic=True)
+def _shower(e, t):
+    s = e.get("s", 1.0); cv = Canvas(520 * s, 760 * s); c = e.get("color", "navy")
+    cv.rect(140 * s, -360 * s, 40 * s, 140 * s, c, 180, False, 10, 1); cv.rect(-20 * s, -360 * s, 200 * s, 40 * s, c, 181, False, 10, 1)
+    cv.poly([(-150 * s, -230 * s), (40 * s, -230 * s), (0, -320 * s), (-110 * s, -320 * s)], c)
+    r = random.Random(7)
+    for k in range(14):
+        x = r.uniform(-140, 30) * s; sp = r.uniform(350, 520); y = (-200 + (t * sp + r.uniform(0, 560)) % 560) * s
+        cv.poly([(x, y - 34 * s), (x + 15 * s, y), (x, y + 12 * s), (x - 15 * s, y)], e.get("water", "sky"), False)
+    return cv.im
+
+
 # ---------- timeline ----------
 def norm(w): return re.sub(r"[^a-z0-9%#]", "", w.lower())
 
