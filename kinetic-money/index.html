@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rise and Grind</title>
+<style>
+  @font-face { font-family: 'Anton'; src: url('fonts/Anton.woff2') format('woff2'); }
+  :root {
+    --bg: #070707;
+    --white: #F7F4EC;
+    --gold: #FFC83D;
+    --red: #FF3B30;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #000; height: 100%; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+
+  #stage {
+    position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: var(--bg); transform-origin: center center; flex: none;
+  }
+  #glow, #dust, #layer, #flash, #vignette, #grain { position: absolute; inset: 0; }
+  #glow { background: radial-gradient(ellipse 70% 45% at 50% 50%, rgba(255,190,40,.55), rgba(255,140,0,.12) 45%, transparent 75%); }
+  #vignette { background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.8) 100%); pointer-events: none; }
+  #grain {
+    inset: -50%; opacity: .09; mix-blend-mode: overlay; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  #flash { opacity: 0; pointer-events: none; }
+  .dot { position: absolute; border-radius: 50%; background: var(--gold); }
+
+  .scene { position: absolute; inset: 0; display: none; }
+  .abs { position: absolute; left: 50%; top: 50%; white-space: nowrap; will-change: transform; }
+  .anton { font-family: 'Anton', 'Inter Display', sans-serif; line-height: 1.12; text-transform: uppercase; }
+  .inter { font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-weight: 800; }
+  .white { color: var(--white); }
+  .gold {
+    background: linear-gradient(180deg, #FFF3C4 0%, #FFD54F 30%, #F2AE00 65%, #B87900 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 28px rgba(255,180,0,.35));
+  }
+  .outline { color: transparent; -webkit-text-stroke: 5px var(--gold); }
+  .ch { display: inline-block; will-change: transform; }
+  .mask { overflow: hidden; padding: 0 20px; }
+  .mask > span { display: inline-block; }
+  .bar { position: absolute; left: 50%; top: 50%; transform-origin: left center; }
+
+  #ui { position: fixed; left: 0; right: 0; bottom: 0; height: 6px; background: rgba(255,255,255,.15); cursor: pointer; }
+  #ui > div { height: 100%; width: 0; background: var(--gold); }
+  #hint { position: fixed; top: 12px; left: 0; right: 0; text-align: center; color: #888; font: 600 13px Inter, sans-serif; }
+  .render #ui, .render #hint { display: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="glow"></div>
+  <div id="dust"></div>
+  <div id="layer"></div>
+  <div id="flash"></div>
+  <div id="vignette"></div>
+  <div id="grain"></div>
+</div>
+<div id="hint">click / space = play-pause · click bar = scrub</div>
+<div id="ui"><div></div></div>
+
+<script>
+const W = 1080, H = 1920;
+const RENDER = new URLSearchParams(location.search).has('render');
+if (RENDER) document.documentElement.classList.add('render');
+
+// ---------- helpers ----------
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const E = {
+  lin: x => x,
+  outExpo: x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x),
+  outCubic: x => 1 - Math.pow(1 - x, 3),
+  inCubic: x => x * x * x,
+  inOutCubic: x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+  outBack: x => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); },
+};
+// eased progress of a tween starting at s lasting d
+const P = (t, s, d, e = E.outExpo) => e(clamp((t - s) / d));
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+function set(el, { x = 0, y = 0, s = 1, r = 0, o = 1, blur = 0 } = {}) {
+  el.style.transform = `translate(-50%,-50%) translate(${x}px,${y + (el._y || 0)}px) scale(${s}) rotate(${r}deg)`;
+  el.style.opacity = o;
+  el.style.filter = blur > .3 ? `blur(${blur}px)` : '';
+}
+// text element; shrinks font so it never exceeds `fit` px wide
+function txt(parent, text, cls, size, y = 0, fit = 1000, split = false, measure = text) {
+  const el = document.createElement('div');
+  el.className = 'abs ' + cls;
+  el.style.fontSize = size + 'px';
+  el._y = y;
+  parent.appendChild(el);
+  el.textContent = measure;
+  if (el.offsetWidth > fit) el.style.fontSize = (size * fit / el.offsetWidth) + 'px';
+  el.textContent = '';
+  if (split) {
+    el.chars = [...text].map(c => {
+      const sp = document.createElement('span');
+      sp.className = 'ch' + (cls.includes('gold') ? ' gold' : '');
+      sp.textContent = c === ' ' ? ' ' : c;
+      el.appendChild(sp); return sp;
+    });
+    if (cls.includes('gold')) el.classList.remove('gold');
+  } else el.textContent = text;
+  set(el);
+  return el;
+}
+function mask(parent, text, cls, size, y, fit) {
+  const el = txt(parent, '', 'mask ' + cls, size, y, fit, false, text);
+  const inner = document.createElement('span');
+  inner.textContent = text; el.appendChild(inner); el.inner = inner;
+  return el;
+}
+function bar(parent, w, h, y, color, rot = 0) {
+  const el = document.createElement('div');
+  el.className = 'bar';
+  Object.assign(el.style, { width: w + 'px', height: h + 'px', background: color, marginLeft: (-w / 2) + 'px', marginTop: (y - h / 2) + 'px' });
+  el._rot = rot; parent.appendChild(el); return el;
+}
+const scaleX = (el, p) => { el.style.transform = `rotate(${el._rot}deg) scaleX(${p})`; };
+const exitP = (lt, len) => P(lt, len - .15, .15, E.inCubic);
+function exitScene(root, lt, len) {
+  const x = exitP(lt, len);
+  root.style.transform = `scale(${1 + x * .25})`; root.style.opacity = 1 - x;
+}
+
+// ---------- scenes ----------
+// Each scene: start, length, impacts (local seconds), build(root) -> state, update(lt, state, root)
+const SCENES = [
+  { // WHILE THEY / SLEEP
+    len: 1.75, impacts: [.55],
+    build(r) {
+      return { a: mask(r, 'WHILE THEY', 'anton white', 120, -190, 900), b: txt(r, 'SLEEP', 'anton white', 330, 70, 980) };
+    },
+    update(lt, { a, b }, r) {
+      a.inner.style.transform = `translateY(${(1 - P(lt, .1, .5)) * 110}%)`;
+      const p = P(lt, .45, .35), q = P(lt, 1.05, .55, E.inOutCubic);
+      set(b, { s: lerp(1.7, 1, p) * lerp(1, .94, q), o: clamp((lt - .45) / .08) * (1 - .7 * q), blur: (1 - p) * 22 });
+      b.style.letterSpacing = (q * 26) + 'px';
+      exitScene(r, lt, this.len);
+    }
+  },
+  { // YOU / GRIND.
+    len: 1.85, impacts: [.07, .72],
+    build(r) {
+      return {
+        you: txt(r, 'YOU', 'anton gold', 460, 0, 900),
+        grind: txt(r, 'GRIND.', 'anton white', 400, 140, 1000, true),
+        line: bar(r, 720, 20, 400, 'var(--gold)'),
+      };
+    },
+    update(lt, { you, grind, line }, r) {
+      const p = P(lt, 0, .28), m = P(lt, .55, .4, E.inOutCubic);
+      set(you, { s: lerp(3.4, 1, p) * lerp(1, .55, m), y: lerp(0, -470, m), o: clamp(lt / .05), blur: (1 - p) * 26 });
+      grind.chars.forEach((c, i) => {
+        const st = .62 + i * .04, cp = P(lt, st, .45);
+        c.style.transform = `translateY(${(1 - cp) * 340}px) rotate(${(1 - cp) * -10}deg)`;
+        c.style.opacity = clamp((lt - st) / .06);
+      });
+      grind.chars[5].classList.add('gold');
+      scaleX(line, P(lt, .95, .45));
+      exitScene(r, lt, this.len);
+    }
+  },
+  { // 4:59 -> 5:00 AM
+    len: 1.9, impacts: [.65], flashes: [.65],
+    build(r) {
+      const sub = 'WHILE THE WORLD HITS SNOOZE';
+      return {
+        clock: txt(r, '4:59', 'mono white', 330, -60, 900, false, '5:00'),
+        am: txt(r, 'AM', 'anton gold', 110, 170, 400),
+        sub: txt(r, sub, 'inter white', 56, 360, 800, true),
+      };
+    },
+    update(lt, { clock, am, sub }, r) {
+      const flip = lt >= .65, pop = P(lt, .65, .35);
+      clock.textContent = flip ? '5:00' : '4:59';
+      clock.className = 'abs mono ' + (flip ? 'gold' : 'white');
+      const buzz = lt > .15 && lt < .65 ? Math.sin(lt * 95) * 6 : 0;
+      set(clock, { x: buzz, s: lerp(.9, 1, P(lt, 0, .3)) * (flip ? lerp(1.18, 1, pop) : 1), o: P(lt, 0, .15, E.lin) });
+      set(am, { o: P(lt, .7, .2, E.lin), y: (1 - P(lt, .7, .4)) * 40 });
+      sub.style.letterSpacing = '6px';
+      sub.chars.forEach((c, i) => { c.style.opacity = lt > .85 + i * .022 ? .8 : 0; });
+      exitScene(r, lt, this.len);
+    }
+  },
+  { // NO / DAYS / OFF
+    len: 2.0, impacts: [0, .45, .9, 1.38],
+    build(r) {
+      return { w: [txt(r, 'NO', 'anton white', 560, 0, 1000), txt(r, 'DAYS', 'anton white', 560, 0, 1000), txt(r, 'OFF', 'anton gold', 560, 0, 1000)] };
+    },
+    update(lt, { w }, r) {
+      w.forEach((el, i) => {
+        const st = i * .45;
+        if (lt < 1.35) {
+          const vis = lt >= st && lt < st + .45, p = P(lt, st, .22);
+          set(el, { s: lerp(1.6, 1, p), o: vis ? 1 : 0, blur: (1 - p) * 18 });
+        } else {
+          const k = P(lt, 1.35 + i * .07, .35);
+          const sz = parseFloat(el.style.fontSize), target = 330 / sz;
+          if (i === 2) { const m = P(lt, 1.35, .35); set(el, { y: m * 400, s: lerp(1, target, m) }); }
+          else set(el, { x: (1 - k) * (i % 2 ? 1150 : -1150), y: (i - 1) * 400, s: target, o: lt >= 1.35 + i * .07 ? 1 : 0 });
+        }
+      });
+      exitScene(r, lt, this.len);
+    }
+  },
+  { // $0 -> $1,000,000
+    len: 2.6, impacts: [1.8], flashes: [1.8],
+    build(r) {
+      const rand = rng(7), bucks = [];
+      for (let i = 0; i < 26; i++) {
+        const b = txt(r, '$', 'anton gold', 70 + rand() * 70, 0, 400);
+        b.a = i / 26 * Math.PI * 2 + rand() * .3; b.d = 450 + rand() * 450; b.sp = (rand() - .5) * 400;
+        bucks.push(b);
+      }
+      return {
+        label: txt(r, 'THE GOAL', 'inter white', 58, -290, 900),
+        num: txt(r, '$0', 'anton gold', 270, 0, 1000, false, '$1,000,000'),
+        sub: txt(r, 'ONE DAY AT A TIME.', 'inter white', 62, 280, 980),
+        bucks,
+      };
+    },
+    update(lt, { label, num, sub, bucks }, r) {
+      label.style.letterSpacing = '16px';
+      set(label, { o: .7 * P(lt, 0, .3, E.lin), y: (1 - P(lt, 0, .5)) * 30 });
+      const p = clamp((lt - .2) / 1.6);
+      const v = lt >= 1.8 ? 1e6 : Math.round((Math.pow(10, 6 * p) - 1) / (1e6 - 1) * 1e6);
+      num.textContent = '$' + v.toLocaleString('en-US');
+      const pop = P(lt, 1.8, .4), rumble = lt < 1.8 ? p * p * 7 : 0;
+      set(num, { x: Math.sin(lt * 70) * rumble, y: Math.cos(lt * 53) * rumble, s: lerp(.85, 1, p) * (lt >= 1.8 ? lerp(1.2, 1, pop) : 1), o: P(lt, 0, .15, E.lin) });
+      set(sub, { o: P(lt, 1.95, .3, E.lin), y: (1 - P(lt, 1.95, .5)) * 40 });
+      const b = P(lt, 1.8, 1, E.outCubic);
+      bucks.forEach(el => set(el, {
+        x: Math.cos(el.a) * el.d * b, y: Math.sin(el.a) * el.d * b + b * b * 120,
+        r: el.sp * b, o: lt < 1.8 ? 0 : 1 - P(lt, 2.0, .55, E.lin), s: lerp(.3, 1, b),
+      }));
+      exitScene(r, lt, this.len);
+    }
+  },
+  { // MOTIVATION ✗ / DISCIPLINE
+    len: 2.0, impacts: [.97],
+    build(r) {
+      const mot = txt(r, 'MOTIVATION', 'anton white', 200, -190, 940);
+      return { mot, strike: bar(r, mot.offsetWidth + 60, 24, -190 + parseFloat(mot.style.fontSize) * .1, 'var(--red)', -4), dis: txt(r, 'DISCIPLINE', 'anton gold', 240, 140, 1000) };
+    },
+    update(lt, { mot, strike, dis }, r) {
+      set(mot, { y: (1 - P(lt, 0, .45)) * 70, o: P(lt, 0, .2, E.lin) * (1 - .65 * P(lt, .6, .25, E.lin)) });
+      scaleX(strike, P(lt, .45, .22, E.outCubic));
+      const p = P(lt, .9, .28);
+      set(dis, { s: lerp(2.6, 1, p), o: clamp((lt - .9) / .06), blur: (1 - p) * 24 });
+      exitScene(r, lt, this.len);
+    }
+  },
+  { // RISE & GRIND
+    len: 2.1, impacts: [.25, 1.5], flashes: [1.5],
+    build(r) {
+      return {
+        rise: txt(r, 'RISE', 'anton white', 430, -360, 900, true),
+        amp: txt(r, '&', 'anton gold', 170, -40, 400),
+        out: txt(r, 'GRIND', 'anton outline', 430, 290, 1000),
+        fill: txt(r, 'GRIND', 'anton gold', 430, 290, 1000, false),
+      };
+    },
+    update(lt, { rise, amp, out, fill }, r) {
+      fill.style.fontSize = out.style.fontSize;
+      rise.chars.forEach((c, i) => {
+        const p = P(lt, i * .07, .42, E.outBack);
+        c.style.transform = `scale(${p}) rotate(${(1 - p) * -25}deg)`;
+        c.style.opacity = clamp((lt - i * .07) / .05);
+      });
+      set(amp, { s: P(lt, .5, .35, E.outBack), r: (1 - P(lt, .5, .4)) * 90, o: clamp((lt - .5) / .05) });
+      const oy = (1 - P(lt, .7, .4)) * 80;
+      set(out, { y: oy, o: P(lt, .7, .2, E.lin) });
+      const f = P(lt, .95, .55, E.inOutCubic) * 100;
+      set(fill, { y: oy, s: lt >= 1.5 ? lerp(1.1, 1, P(lt, 1.5, .3)) : 1 });
+      fill.style.clipPath = `inset(-20% ${100 - f}% -20% 0)`;
+      exitScene(r, lt, this.len);
+    }
+  },
+  { // end card
+    len: 2.2, impacts: [.4],
+    build(r) {
+      const pill = txt(r, 'SUBSCRIBE', 'anton', 120, 90, 800);
+      Object.assign(pill.style, { background: 'linear-gradient(180deg,#FFE27A,#F2AE00)', color: '#0A0A0A', padding: '10px 70px', borderRadius: '999px', boxShadow: '0 0 80px rgba(255,180,0,.45)' });
+      return { ch: mask(r, '@YOURCHANNEL', 'anton gold', 130, -170, 900), pill, sub: txt(r, 'NEW GRIND EVERY DAY', 'inter white', 46, 300, 900) };
+    },
+    update(lt, { ch, pill, sub }) {
+      ch.inner.style.transform = `translateY(${(1 - P(lt, 0, .5)) * 110}%)`;
+      const p = P(lt, .3, .45, E.outBack);
+      set(pill, { s: p * (1 + (lt > 1 ? Math.sin((lt - 1) * 6) * .03 : 0)), o: clamp((lt - .3) / .05) });
+      sub.style.letterSpacing = '12px';
+      set(sub, { o: .6 * P(lt, .75, .3, E.lin), y: (1 - P(lt, .75, .5)) * 30 });
+    }
+  },
+];
+
+// ---------- timeline ----------
+let t0 = 0;
+const IMPACTS = [], FLASHES = [];
+for (const s of SCENES) {
+  s.start = t0; t0 += s.len;
+  (s.impacts || []).forEach(i => IMPACTS.push(+(s.start + i).toFixed(3)));
+  (s.flashes || []).forEach(i => FLASHES.push(s.start + i));
+}
+const DURATION = t0;
+
+const layer = document.getElementById('layer'), glow = document.getElementById('glow');
+const flash = document.getElementById('flash'), grain = document.getElementById('grain');
+const dust = document.getElementById('dust');
+const DOTS = [];
+
+function build() {
+  for (const s of SCENES) {
+    s.root = document.createElement('div'); s.root.className = 'scene';
+    layer.appendChild(s.root); s.root.style.display = 'block';
+    s.state = s.build(s.root); s.root.style.display = 'none';
+  }
+  const rand = rng(42);
+  for (let i = 0; i < 46; i++) {
+    const d = document.createElement('div'); d.className = 'dot';
+    const sz = 2 + rand() * 6;
+    Object.assign(d.style, { width: sz + 'px', height: sz + 'px', filter: sz > 6 ? 'blur(2px)' : '' });
+    DOTS.push({ el: d, x: rand() * W, y: rand() * H, vx: (rand() - .5) * 30, vy: 20 + rand() * 60, o: .15 + rand() * .45, ph: rand() * 6 });
+    dust.appendChild(d);
+  }
+}
+
+function seek(t) {
+  for (const s of SCENES) {
+    const lt = t - s.start, on = lt >= 0 && lt < s.len;
+    s.root.style.display = on ? 'block' : 'none';
+    if (on) s.update(lt, s.state, s.root);
+  }
+  // camera shake + glow energy from recent impacts
+  let sx = 0, sy = 0, sr = 0, energy = 0;
+  for (const i of IMPACTS) {
+    const d = t - i;
+    if (d >= 0 && d < .35) {
+      const a = Math.pow(1 - d / .35, 2);
+      sx += Math.sin(d * 90 + i * 13) * 24 * a; sy += Math.cos(d * 77 + i * 7) * 24 * a; sr += Math.sin(d * 60 + i) * .8 * a;
+      energy += a;
+    }
+  }
+  layer.style.transform = `translate(${sx}px,${sy}px) rotate(${sr}deg)`;
+  glow.style.opacity = .28 + .1 * Math.sin(t * 2) + .45 * Math.min(1, energy);
+  let f = 0;
+  for (const fl of FLASHES) { const d = t - fl; if (d >= 0 && d < .18) f = Math.max(f, .55 * (1 - d / .18)); }
+  flash.style.background = '#FFE9A8'; flash.style.opacity = f;
+  const fr = Math.floor(t * 24);
+  grain.style.transform = `translate(${(fr * 37 % 100) - 50}px,${(fr * 61 % 100) - 50}px)`;
+  for (const d of DOTS) {
+    const x = ((d.x + d.vx * t) % W + W) % W, y = ((d.y - d.vy * t) % H + H) % H;
+    d.el.style.transform = `translate(${x}px,${y}px)`;
+    d.el.style.opacity = d.o * (.6 + .4 * Math.sin(t * 2 + d.ph));
+  }
+}
+
+// ---------- boot ----------
+document.fonts.load('100px Anton').then(() => document.fonts.ready).then(() => {
+  build();
+  seek(0);
+  window.__seek = seek;
+  window.__meta = { duration: DURATION, impacts: IMPACTS };
+  window.__ready = true;
+  if (RENDER) return;
+
+  const stage = document.getElementById('stage'), prog = document.querySelector('#ui > div');
+  const fit = () => { stage.style.transform = `scale(${Math.min(innerWidth / W, (innerHeight - 40) / H)})`; };
+  addEventListener('resize', fit); fit();
+  let playing = true, cur = 0, last = performance.now();
+  const loop = now => {
+    if (playing) cur = (cur + (now - last) / 1000) % DURATION;
+    last = now; seek(cur); prog.style.width = (cur / DURATION * 100) + '%';
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+  stage.addEventListener('click', () => playing = !playing);
+  addEventListener('keydown', e => { if (e.code === 'Space') { playing = !playing; e.preventDefault(); } });
+  document.getElementById('ui').addEventListener('click', e => { cur = e.clientX / innerWidth * DURATION; });
+});
+</script>
+</body>
+</html>
