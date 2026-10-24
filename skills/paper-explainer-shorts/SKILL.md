@@ -24,7 +24,7 @@ If the user didn't give one, choose from `reference/topic-bank.md` or propose a 
 - **Answerable:** there is solid, citable research behind the explanation.
 
 ### 2. Write the script (read `reference/script-formula.md`)
-Six scenes: **hook → reason #1 → turn → reason #2 → fix/good news → CTA**. That is 140–160 words, so the voice lands at 55–58 s. Every claim must be well supported; write the sources down for the upload kit. Never invent statistics.
+Six scenes: **hook → reason #1 → turn → reason #2 → fix → CTA + loop line**. That is 120–145 words, so the voice lands at 45–52 s. **Write the hook first and pass the hook scorecard in the formula**: a frame-1 visual hook (text hook, a reacting character, motion), a spoken claim that ends by 2.5 s, and a loop ending. Every claim must be well supported; write the sources down for the upload kit. Never invent statistics.
 
 ### 3. Write the scene spec
 Copy `examples/cringe-memories.json` into the work dir as `script.json` and replace its contents. Schema and every visual element type: `reference/scene-spec.md`. Rules of thumb:
@@ -38,9 +38,10 @@ Copy `examples/cringe-memories.json` into the work dir as `script.json` and repl
 W=<work dir>; S=skills/paper-explainer-shorts/scripts
 python3 $S/tts.py $W/script.json $W        # prints "voice: 57.3s"
 ```
-The target is 55–58.5 s. If it's too long, cut words first; otherwise raise `speed` (1.0–1.12) or lower `gap_line`/`gap_scene`. Voices: `af_heart` (default, warm female), `am_michael`/`am_fenrir` (male), `bf_emma` (British female).
+The target is 45–52 s. Then set `duration` to the last word's end + 0.3 s, so the loop line cuts straight back into the hook. If it's too long, cut words first; otherwise raise `speed` (1.0–1.12) or lower `gap_line`/`gap_scene`. Voices: `af_heart` (default, warm female), `am_michael`/`am_fenrir` (male), `bf_emma` (British female).
 
 ### 5. Preview and fix the layout (don't skip this)
+Render the frames at 0, 0.25, 0.5 and 1.0 s first (`render.py … still`). Frame 1 is the swipe decision: check that the text hook isn't cropped by the punch-in, and that the motion is already visible.
 ```bash
 python3 $S/preview.py $W/script.json $W     # -> $W/preview_sheet.png + thumbnails
 ```
@@ -50,7 +51,7 @@ Look at `preview_sheet.png` and the thumbnails. Check for overlaps, text running
 ```bash
 python3 $S/build.py $W/script.json $W --skip-tts
 ```
-This writes `<slug>_short.mp4` (1080×1920, 30 fps, 60 s, -14 LUFS), `<slug>_voiceover.mp3`, `thumbnail_9x16.png` and `thumbnail_16x9.png`. Rendering takes about 1.5 min on 4 cores. Spot-check a few frames of the final mp4 with ffmpeg before delivering.
+This writes `<slug>_short.mp4` (1080×1920, 30 fps, `duration` seconds, -14 LUFS), `<slug>_voiceover.mp3`, `thumbnail_9x16.png` and `thumbnail_16x9.png`. Rendering takes about 1.5 min on 4 cores. Spot-check a few frames of the final mp4 with ffmpeg before delivering.
 
 ### 7. Upload kit
 Fill in `templates/upload-kit.md`: 3 title options (≤ 70 chars, with the hook phrase plus #shorts), a description (hook line, 3 emoji bullets, CTA, hashtags), 8–10 hashtags (the first three show above the title), 15–20 keywords, a pinned-comment prompt, and the sources.

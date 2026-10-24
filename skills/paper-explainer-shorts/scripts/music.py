@@ -35,7 +35,14 @@ def main(spec_path, work):
     starts = sorted({min(l["start"] for l in timing["lines"] if l["scene"] == s) - 0.25 for s in range(1, len(spec["scenes"]))})
     for s in starts:  # paper rustle under each scene change
         L = int(0.35 * SR); add(mus, np.diff(R.normal(0, 1, L), prepend=0) * np.hanning(L) * 0.12, s - 0.05)
-    mus *= np.minimum(1, np.minimum(t / 0.4, (dur - t) / 2.0))
+    mus *= np.minimum(1, (dur - t) / 2.0)  # no fade-in: full energy from frame 1
+    # frame-1 impact: sub boom + paper rip, the audio half of the visual hook
+    L = int(0.6 * SR); tt = np.arange(L) / SR
+    add(mus, np.sin(2 * np.pi * (45 + 90 * np.exp(-tt * 20)) * tt) * np.exp(-tt * 6) * 0.5, 0.0)
+    L = int(0.32 * SR); rip = np.diff(R.normal(0, 1, L), prepend=0) * np.abs(np.sin(np.arange(L) / SR * 2 * np.pi * 38)) * np.exp(-np.arange(L) / SR * 6)
+    add(mus, rip * 0.22, 0.0)
+    for s in starts:  # small thump under every scene punch-in
+        L = int(0.3 * SR); tt = np.arange(L) / SR; add(mus, np.sin(2 * np.pi * (50 + 60 * np.exp(-tt * 25)) * tt) * np.exp(-tt * 10) * 0.25, s + 0.3)
     v, vsr = sf.read(os.path.join(work, "voice.wav")); vi = np.abs(np.interp(t, np.arange(len(v)) / vsr, v, right=0))
     k = int(0.15 * SR); env = np.convolve(vi, np.ones(k) / k, "same"); mus *= 1 - 0.45 * np.clip(env * 12, 0, 1)
     sf.write(os.path.join(work, "music.wav"), np.stack([mus, mus], 1).astype(np.float32), SR)

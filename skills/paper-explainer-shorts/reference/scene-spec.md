@@ -6,7 +6,10 @@
   "slug": "why-you-still-cringe",                           // optional override
   "voice": "af_heart", "speed": 1.08,                       // Kokoro voice + speed
   "gap_line": 0.3, "gap_scene": 0.55,                       // pauses (s) after a line / at a scene end or after "?" ":"
-  "duration": 60.0,                                         // final video length
+  "duration": 51.0,                                         // final length: last spoken word + 0.3 s (loop ending)
+  "lead_in": 0.05,                                          // silence before the first word (keep ~0 so frame 1 has voice)
+  "hook": {"speed": 1.12, "punch": 1.15, "shake": 14, "caption_size": 96},  // scene-0 voice speed, frame-1 zoom/shake, bigger hook captions
+  "scene_punch": 1.06,                                      // small zoom-in on every scene change
   "mood": "curious", "bpm": 112,                            // music: curious (Am F C G) | bright (C F G Am) | night (Dm Bb F C)
   "scenes": [ { "name": "hook", "bg": "night", "lines": ["..."], "elements": [ ... ] } ],
   "thumbnail": { "bg": "night", "vertical": [ ...elements ], "horizontal": [ ...elements ] }
@@ -25,6 +28,7 @@ Canvas: 1080×1920. Coordinates are the **centre** of each element. Visual zone 
 | `anim` | entrance: `pop` (default, stop-motion overshoot), `slide_left`, `slide_right`, `slide_up`, `slide_down`, `none` |
 | `loop` | `bob`, `spin` (+`spin_speed` deg/s), `shake` (+`shake_for` s), `pulse`, `wiggle` |
 | `jitter` | `false` to disable the stop-motion jitter |
+| `from`, `move_dur` | glide from `[x, y]` to `x, y` over `move_dur` s, starting at `at`. Unlike `anim`, it moves on frame 1 in scene 0, so use it for the visual hook. |
 
 Colours: `cream paper mustard terra teal navy sky pink red green night ink skin blush brainpink white` or `[r,g,b]`.
 

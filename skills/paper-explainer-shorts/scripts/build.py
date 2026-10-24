@@ -16,8 +16,9 @@ def main(spec_path, out, skip_tts=False):
     py = sys.executable
     if not skip_tts: sh(py, os.path.join(HERE, "tts.py"), spec_path, out)
     timing = json.load(open(os.path.join(out, "timing.json")))
-    if timing["duration"] > spec.get("duration", 60.0) - 0.5:
-        raise SystemExit(f"voiceover is {timing['duration']:.1f}s - trim the script or raise 'speed' (target <= {spec.get('duration', 60.0) - 1.5:.0f}s)")
+    last = timing["lines"][-1]["end"]; dur = spec.get("duration", 60.0)
+    if last > dur - 0.2:
+        raise SystemExit(f"last word ends at {last:.1f}s but duration is {dur}s - trim the script, raise 'speed', or set duration to about {last + 0.3:.1f} for a loop ending")
     sh(py, os.path.join(HERE, "music.py"), spec_path, out)
     sh(py, os.path.join(HERE, "render.py"), spec_path, out, "video")
     sh(py, os.path.join(HERE, "render.py"), spec_path, out, "thumbs")

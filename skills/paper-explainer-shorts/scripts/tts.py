@@ -34,10 +34,11 @@ def main(script_path, out):
     k = Kokoro(*ensure_model())
     voice, speed = spec.get("voice", "af_heart"), spec.get("speed", 0.98)
     gap_line, gap_scene = spec.get("gap_line", 0.36), spec.get("gap_scene", 0.62)
-    t = 0.3; chunks = [np.zeros(int(SR * t))]; lines = []
+    t = spec.get("lead_in", 0.05); chunks = [np.zeros(int(SR * t))]; lines = []  # near-zero lead-in: the voice starts on frame 1
     for si, sc in enumerate(spec["scenes"]):
         for li, txt in enumerate(sc["lines"]):
-            a, _ = k.create(txt, voice=voice, speed=speed, lang="en-us")
+            sp = spec.get("hook", {}).get("speed", speed) if si == 0 else speed  # hook lines can run hotter
+            a, _ = k.create(txt, voice=voice, speed=sp, lang="en-us")
             idx = np.where(np.abs(a) > 0.01)[0]; a = a[max(idx[0] - 240, 0):idx[-1] + 480]
             d = len(a) / SR
             lines.append({"scene": si, "text": txt, "start": round(t, 3), "end": round(t + d, 3),

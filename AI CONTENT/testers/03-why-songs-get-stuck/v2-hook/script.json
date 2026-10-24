@@ -1,0 +1,895 @@
+{
+ "topic": "Why songs get stuck in your head",
+ "slug": "why-songs-get-stuck-v2",
+ "voice": "af_heart",
+ "speed": 1.08,
+ "gap_line": 0.3,
+ "gap_scene": 0.55,
+ "duration": 51.0,
+ "mood": "bright",
+ "bpm": 112,
+ "scenes": [
+  {
+   "name": "hook",
+   "bg": "cream",
+   "lines": [
+    "It's not random. Your brain is doing it on purpose.",
+    "It's called an earworm, and nine in ten people get one every week."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "SONG STUCK",
+     "size": 112,
+     "color": "terra",
+     "fg": "paper",
+     "x": 540,
+     "y": 330,
+     "rot": -3,
+     "out": "earworm-0.1"
+    },
+    {
+     "type": "label",
+     "text": "IN YOUR HEAD?",
+     "size": 82,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 470,
+     "rot": 2,
+     "out": "earworm-0.1"
+    },
+    {
+     "type": "person",
+     "mood": "shock",
+     "x": 560,
+     "y": 990,
+     "r": 125,
+     "color": "teal",
+     "loop": "wiggle",
+     "out": "nine-0.15"
+    },
+    {
+     "type": "note",
+     "x": 830,
+     "y": 650,
+     "r": 46,
+     "color": "navy",
+     "loop": "bob",
+     "rot": -10,
+     "out": "nine-0.15"
+    },
+    {
+     "type": "note",
+     "kind": "double",
+     "x": 860,
+     "y": 900,
+     "r": 40,
+     "color": "terra",
+     "loop": "bob",
+     "rot": 8,
+     "out": "nine-0.15"
+    },
+    {
+     "type": "note",
+     "x": 180,
+     "y": 650,
+     "r": 40,
+     "color": "mustard",
+     "loop": "bob",
+     "rot": 10,
+     "out": "nine-0.15"
+    },
+    {
+     "type": "worm",
+     "x": 215,
+     "y": 870,
+     "r": 46,
+     "anim": "none",
+     "out": "nine-0.15",
+     "from": [
+      -260,
+      900
+     ],
+     "move_dur": 1.4
+    },
+    {
+     "type": "label",
+     "text": "ON PURPOSE",
+     "size": 64,
+     "color": "pink",
+     "fg": "navy",
+     "x": 740,
+     "y": 640,
+     "rot": 9,
+     "font": "marker",
+     "at": "purpose",
+     "out": "earworm-0.1"
+    },
+    {
+     "type": "label",
+     "text": "EARWORM",
+     "size": 120,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 290,
+     "rot": -3,
+     "at": "earworm"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 180,
+     "y": 760,
+     "r": 36,
+     "color": "teal",
+     "hair": "ink",
+     "at": "nine+0.00"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 360,
+     "y": 760,
+     "r": 36,
+     "color": "terra",
+     "hair": "ink",
+     "at": "nine+0.06"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 540,
+     "y": 760,
+     "r": 36,
+     "color": "mustard",
+     "hair": "ink",
+     "at": "nine+0.12"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 720,
+     "y": 760,
+     "r": 36,
+     "color": "navy",
+     "hair": "ink",
+     "at": "nine+0.18"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 900,
+     "y": 760,
+     "r": 36,
+     "color": "green",
+     "hair": "ink",
+     "at": "nine+0.24"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 180,
+     "y": 975,
+     "r": 36,
+     "color": "teal",
+     "hair": "ink",
+     "at": "nine+0.30"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 360,
+     "y": 975,
+     "r": 36,
+     "color": "terra",
+     "hair": "ink",
+     "at": "nine+0.36"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 540,
+     "y": 975,
+     "r": 36,
+     "color": "mustard",
+     "hair": "ink",
+     "at": "nine+0.42"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 720,
+     "y": 975,
+     "r": 36,
+     "color": "navy",
+     "hair": "ink",
+     "at": "nine+0.48"
+    },
+    {
+     "type": "person",
+     "mood": "neutral",
+     "x": 900,
+     "y": 975,
+     "r": 36,
+     "color": [
+      160,
+      160,
+      160
+     ],
+     "hair": "ink",
+     "at": "nine+0.54"
+    },
+    {
+     "type": "label",
+     "text": "9 IN 10 PEOPLE, EVERY WEEK",
+     "size": 52,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 1130,
+     "rot": -2,
+     "at": "every"
+    }
+   ]
+  },
+  {
+   "name": "reason1",
+   "bg": "pink",
+   "lines": [
+    "Reason number one: your brain loves a loop.",
+    "Catchy songs tend to be fast, simple and repetitive, with one little twist that grabs you.",
+    "So your brain grabs a short chunk, usually the chorus, and replays it like a GIF."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "REASON #1",
+     "size": 96,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 290,
+     "rot": -3
+    },
+    {
+     "type": "label",
+     "text": "YOUR BRAIN LOVES A LOOP",
+     "size": 62,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 430,
+     "rot": 2,
+     "at": "loves"
+    },
+    {
+     "type": "label",
+     "text": "FAST",
+     "size": 100,
+     "color": "terra",
+     "fg": "paper",
+     "x": 300,
+     "y": 600,
+     "rot": -6,
+     "at": "fast",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "label",
+     "text": "SIMPLE",
+     "size": 100,
+     "color": "teal",
+     "fg": "paper",
+     "x": 730,
+     "y": 730,
+     "rot": 5,
+     "at": "simple",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "label",
+     "text": "REPETITIVE",
+     "size": 100,
+     "color": "navy",
+     "fg": "paper",
+     "x": 430,
+     "y": 870,
+     "rot": -3,
+     "at": "repetitive",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "label",
+     "text": "+1 TWIST",
+     "size": 96,
+     "color": "paper",
+     "fg": "terra",
+     "x": 740,
+     "y": 1020,
+     "rot": 7,
+     "font": "marker",
+     "at": "twist",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "note",
+     "x": 160,
+     "y": 1100,
+     "r": 40,
+     "color": "navy",
+     "loop": "bob",
+     "at": 0.3,
+     "out": "line2-0.1"
+    },
+    {
+     "type": "note",
+     "kind": "double",
+     "x": 900,
+     "y": 580,
+     "r": 36,
+     "color": "navy",
+     "loop": "bob",
+     "at": 0.5,
+     "out": "line2-0.1"
+    },
+    {
+     "type": "replay",
+     "x": 540,
+     "y": 760,
+     "r": 180,
+     "loop": "spin",
+     "spin_speed": -90,
+     "color": "navy",
+     "at": 0.4,
+     "out": "Catchy-0.1"
+    },
+    {
+     "type": "replay",
+     "x": 540,
+     "y": 790,
+     "r": 300,
+     "loop": "spin",
+     "spin_speed": -120,
+     "at": "replays"
+    },
+    {
+     "type": "play_card",
+     "text": "chorus.gif",
+     "x": 540,
+     "y": 820,
+     "at": "line2+0.05"
+    },
+    {
+     "type": "label",
+     "text": "THE CHORUS",
+     "size": 58,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 800,
+     "y": 560,
+     "rot": 8,
+     "at": "chorus"
+    },
+    {
+     "type": "note",
+     "x": 180,
+     "y": 1120,
+     "r": 40,
+     "color": "navy",
+     "loop": "bob",
+     "at": "replays"
+    },
+    {
+     "type": "note",
+     "kind": "double",
+     "x": 900,
+     "y": 1110,
+     "r": 34,
+     "color": "terra",
+     "loop": "bob",
+     "at": "replays+0.2"
+    }
+   ]
+  },
+  {
+   "name": "turn",
+   "bg": "red",
+   "lines": [
+    "But here's why it won't stop."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "BUT...",
+     "size": 220,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 700,
+     "rot": -4,
+     "loop": "shake"
+    },
+    {
+     "type": "label",
+     "text": "WHY WON'T IT STOP?",
+     "size": 64,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 920,
+     "rot": 3,
+     "at": "why"
+    }
+   ]
+  },
+  {
+   "name": "reason2",
+   "bg": "sky",
+   "lines": [
+    "Reason number two: your brain is bored.",
+    "Earworms love moments when your mind wanders, like in the shower or doing chores.",
+    "With nothing else to do, your brain just hits replay."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "REASON #2",
+     "size": 96,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 290,
+     "rot": 3
+    },
+    {
+     "type": "label",
+     "text": "YOUR BRAIN IS BORED",
+     "size": 70,
+     "color": "terra",
+     "fg": "paper",
+     "x": 540,
+     "y": 430,
+     "rot": -2,
+     "at": "bored"
+    },
+    {
+     "type": "brain",
+     "x": 540,
+     "y": 780,
+     "r": 200,
+     "at": 0.3,
+     "out": "shower-0.1"
+    },
+    {
+     "type": "label",
+     "text": "zzz",
+     "size": 120,
+     "color": "paper",
+     "fg": "navy",
+     "x": 830,
+     "y": 570,
+     "rot": 10,
+     "font": "marker",
+     "at": "bored+0.3",
+     "out": "shower-0.1"
+    },
+    {
+     "type": "shower",
+     "x": 320,
+     "y": 930,
+     "s": 1.1,
+     "water": "navy",
+     "at": "shower",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "label",
+     "text": "SHOWER",
+     "size": 70,
+     "color": "paper",
+     "fg": "navy",
+     "x": 300,
+     "y": 1150,
+     "rot": -4,
+     "at": "shower",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "tshirt",
+     "x": 790,
+     "y": 800,
+     "s": 0.75,
+     "color": "mustard",
+     "at": "chores",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "label",
+     "text": "CHORES",
+     "size": 70,
+     "color": "paper",
+     "fg": "navy",
+     "x": 790,
+     "y": 1150,
+     "rot": 4,
+     "at": "chores",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "brain",
+     "x": 540,
+     "y": 790,
+     "r": 150,
+     "at": "line2"
+    },
+    {
+     "type": "replay",
+     "x": 540,
+     "y": 790,
+     "r": 290,
+     "loop": "spin",
+     "spin_speed": -140,
+     "color": "terra",
+     "at": "replay"
+    },
+    {
+     "type": "note",
+     "x": 180,
+     "y": 600,
+     "r": 38,
+     "color": "navy",
+     "loop": "bob",
+     "at": "replay"
+    },
+    {
+     "type": "note",
+     "kind": "double",
+     "x": 890,
+     "y": 1080,
+     "r": 34,
+     "color": "navy",
+     "loop": "bob",
+     "at": "replay+0.15"
+    },
+    {
+     "type": "note",
+     "x": 880,
+     "y": 560,
+     "r": 34,
+     "color": "terra",
+     "loop": "bob",
+     "at": "replay+0.3"
+    }
+   ]
+  },
+  {
+   "name": "fix",
+   "bg": "cream",
+   "lines": [
+    "So here's the fix.",
+    "Chew gum. In one study, chewing gum cut down earworms, because it gets in the way of your brain silently singing along.",
+    "Or give your brain a medium-hard puzzle, like a crossword, to keep it busy."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "THE FIX",
+     "size": 100,
+     "color": "green",
+     "fg": "paper",
+     "x": 540,
+     "y": 290,
+     "rot": -3
+    },
+    {
+     "type": "label",
+     "text": "CHEW GUM",
+     "size": 96,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 440,
+     "rot": 2,
+     "at": "Chew",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 540,
+     "y": 930,
+     "r": 115,
+     "color": "terra",
+     "at": 0.3,
+     "out": "line2-0.1"
+    },
+    {
+     "type": "circle",
+     "r": 62,
+     "color": "pink",
+     "x": 610,
+     "y": 890,
+     "loop": "pulse",
+     "at": "gum",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "label",
+     "text": "FEWER EARWORMS",
+     "size": 62,
+     "color": "green",
+     "fg": "paper",
+     "x": 540,
+     "y": 580,
+     "rot": -2,
+     "at": "cut",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "note",
+     "x": 820,
+     "y": 760,
+     "r": 42,
+     "color": "navy",
+     "at": "silently",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "badge",
+     "kind": "cross",
+     "r": 58,
+     "x": 870,
+     "y": 830,
+     "at": "singing",
+     "out": "line2-0.1"
+    },
+    {
+     "type": "label",
+     "text": "MEDIUM-HARD PUZZLE",
+     "size": 66,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 440,
+     "rot": -2,
+     "at": "puzzle"
+    },
+    {
+     "type": "crossword",
+     "x": 540,
+     "y": 820,
+     "cell": 112,
+     "at": "puzzle"
+    },
+    {
+     "type": "badge",
+     "kind": "check",
+     "r": 70,
+     "x": 830,
+     "y": 1120,
+     "at": "busy"
+    }
+   ]
+  },
+  {
+   "name": "cta",
+   "bg": "teal",
+   "lines": [
+    "What song is stuck in your head right now? Comment below.",
+    "So next time a song gets stuck in your head, remember:"
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "WHAT'S YOUR SONG?",
+     "size": 64,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 330,
+     "rot": -3
+    },
+    {
+     "type": "comment",
+     "user": "@you",
+     "text": "same chorus for 3 days...",
+     "x": 540,
+     "y": 560,
+     "w": 860,
+     "anim": "slide_left"
+    },
+    {
+     "type": "arrow",
+     "x": 540,
+     "y": 850,
+     "len": 220,
+     "rot": -90,
+     "color": "mustard",
+     "at": "Comment",
+     "loop": "bob"
+    },
+    {
+     "type": "label",
+     "text": "COMMENT BELOW",
+     "size": 64,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 1010,
+     "rot": 2,
+     "at": "Comment"
+    },
+    {
+     "type": "follow",
+     "size": 92,
+     "x": 540,
+     "y": 1180,
+     "loop": "pulse",
+     "at": "line1"
+    },
+    {
+     "type": "label",
+     "text": "weird science of being human",
+     "size": 52,
+     "color": "pink",
+     "fg": "navy",
+     "x": 540,
+     "y": 1310,
+     "rot": -2,
+     "font": "marker",
+     "at": "line1+0.3",
+     "jitter": false
+    }
+   ]
+  }
+ ],
+ "thumbnail": {
+  "bg": "cream",
+  "vertical": [
+   {
+    "type": "label",
+    "text": "WHY SONGS GET",
+    "size": 82,
+    "color": "navy",
+    "fg": "paper",
+    "x": 540,
+    "y": 330,
+    "rot": -3
+   },
+   {
+    "type": "label",
+    "text": "STUCK",
+    "size": 230,
+    "color": "terra",
+    "fg": "paper",
+    "x": 540,
+    "y": 540,
+    "rot": 2
+   },
+   {
+    "type": "label",
+    "text": "IN YOUR HEAD",
+    "size": 96,
+    "color": "mustard",
+    "fg": "navy",
+    "x": 540,
+    "y": 760,
+    "rot": -3
+   },
+   {
+    "type": "note",
+    "x": 170,
+    "y": 1260,
+    "r": 55,
+    "color": "navy",
+    "rot": 10
+   },
+   {
+    "type": "note",
+    "kind": "double",
+    "x": 880,
+    "y": 1080,
+    "r": 55,
+    "color": "teal",
+    "rot": -10
+   },
+   {
+    "type": "note",
+    "x": 860,
+    "y": 1350,
+    "r": 50,
+    "color": "terra",
+    "rot": -14
+   },
+   {
+    "type": "worm",
+    "x": 330,
+    "y": 985,
+    "r": 55,
+    "t": 0.3
+   },
+   {
+    "type": "person",
+    "mood": "shock",
+    "x": 540,
+    "y": 1480,
+    "r": 190,
+    "color": "teal"
+   }
+  ],
+  "horizontal": [
+   {
+    "type": "person",
+    "mood": "shock",
+    "x": 280,
+    "y": 530,
+    "r": 135,
+    "color": "teal"
+   },
+   {
+    "type": "note",
+    "x": 90,
+    "y": 200,
+    "r": 45,
+    "color": "navy",
+    "rot": 10
+   },
+   {
+    "type": "note",
+    "kind": "double",
+    "x": 470,
+    "y": 170,
+    "r": 40,
+    "color": "terra",
+    "rot": -8
+   },
+   {
+    "type": "note",
+    "x": 500,
+    "y": 420,
+    "r": 38,
+    "color": "mustard",
+    "rot": -12
+   },
+   {
+    "type": "label",
+    "text": "WHY SONGS GET",
+    "size": 64,
+    "color": "navy",
+    "fg": "paper",
+    "x": 930,
+    "y": 240,
+    "rot": -3
+   },
+   {
+    "type": "label",
+    "text": "STUCK",
+    "size": 150,
+    "color": "terra",
+    "fg": "paper",
+    "x": 930,
+    "y": 395,
+    "rot": 2
+   },
+   {
+    "type": "label",
+    "text": "IN YOUR HEAD",
+    "size": 70,
+    "color": "mustard",
+    "fg": "navy",
+    "x": 950,
+    "y": 560,
+    "rot": -4
+   }
+  ]
+ },
+ "hook": {
+  "speed": 1.12,
+  "punch": 1.15,
+  "shake": 14,
+  "caption_size": 96
+ },
+ "lead_in": 0.05
+}

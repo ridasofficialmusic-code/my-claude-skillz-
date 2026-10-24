@@ -536,6 +536,9 @@ def draw_elements(tl, si, lt, canvas, shadow, fi, first_scene_instant=True):
         elif anim.startswith("slide"):
             p = 1 - (1 - min(1, x / 0.45)) ** 3; dx, dy = {"slide_left": (-1100, 0), "slide_right": (1100, 0), "slide_up": (0, 1400), "slide_down": (0, -1400)}[anim]
             cx += dx * (1 - p); cy += dy * (1 - p)
+        if "from" in e:  # glide from another position (works on frame 1, unlike entrance anims)
+            p = ease((lt - max(st, 0)) / e.get("move_dur", 1.0)); fx, fy = e["from"]
+            cx, cy = fx + (cx - fx) * p, fy + (cy - fy) * p
         if lt > en: s *= max(0, 1 - (lt - en) / 0.3)
         loop = e.get("loop")
         if loop == "bob": cy += 10 * math.sin(lt * 3 + k)
@@ -547,7 +550,7 @@ def draw_elements(tl, si, lt, canvas, shadow, fi, first_scene_instant=True):
         place(canvas, shadow, sprite_for(e, max(0, x)), cx, cy, rot, s, e["type"] != "spotlight")
 
 
-def draw_captions(tl, t, canvas, shadow, y=1400):
+def draw_captions(tl, t, canvas, shadow, y=1400, size=78):
     words = tl.words; act = None; chunks = getattr(tl, "_chunks", None)
     if chunks is None:
         chunks = []; cur = []
@@ -560,12 +563,12 @@ def draw_captions(tl, t, canvas, shadow, y=1400):
     for c in chunks:
         if words[c[0]]["s"] - 0.05 <= t < words[c[-1]]["e"] + 0.15: act = c
     if not act: return
-    toks = [(i, words[i]["w"].upper().strip(",.?:!")) for i in act if words[i]["s"] <= t + 0.02]
+    toks = [(i, words[i]["w"].upper().strip(",.?:!")) for i in act if words[i]["s"] <= t + 0.06]  # +0.06 so frame 1 already has a word
     shades = ["paper", (250, 240, 215), (236, 226, 206)]; ims = []
     for i, w in toks:
         on = t < words[i]["e"] + 0.1 and i == toks[-1][0]
-        key = ("cap", i, on)
-        if key not in _cache: _cache[key] = texturize(label_sprite(w, "bold", 78, "mustard" if on else shades[i % 3], "navy", 100 + i, 22, 14))
+        key = ("cap", i, on, size)
+        if key not in _cache: _cache[key] = texturize(label_sprite(w, "bold", size, "mustard" if on else shades[i % 3], "navy", 100 + i, int(size * 0.28), int(size * 0.18)))
         ims.append((_cache[key], i * 37 % 7 - 3))
     tot = sum(im.width for im, _ in ims) + 4 * (len(ims) - 1)
     if tot > 1000:
@@ -599,12 +602,31 @@ def frame(tl, t):
         out.alpha_composite(sh.filter(ImageFilter.GaussianBlur(10)))
         out.paste(background(spec.get("bg", "cream")), (0, 0), sheet)
         canvas = Image.new("RGBA", (W, H), (0, 0, 0, 0)); shadow = canvas.copy()
-    draw_captions(tl, t, canvas, shadow)
-    # progress strip
-    pw = int(W * min(1, t / tl.dur)); pd = ImageDraw.Draw(canvas)
-    if pw > 0: pd.polygon([(0, 0), (pw, 0), (pw, 14 + 3 * math.sin(pw)), (0, 16)], fill=C["mustard"])
     out.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(7))); out.alpha_composite(canvas)
+    out = camera(tl, si, lt, fi, out, TR)
+    # captions + progress strip sit outside the camera so they never shake or crop
+    cap = Image.new("RGBA", (W, H), (0, 0, 0, 0)); csh = cap.copy()
+    draw_captions(tl, t, cap, csh, size=tl.spec.get("hook", {}).get("caption_size", 96) if si == 0 else 78)
+    pw = int(W * min(1, t / tl.dur)); pd = ImageDraw.Draw(cap)
+    if pw > 0: pd.polygon([(0, 0), (pw, 0), (pw, 14 + 3 * math.sin(pw)), (0, 16)], fill=C["mustard"])
+    out.alpha_composite(csh.filter(ImageFilter.GaussianBlur(7))); out.alpha_composite(cap)
     return out.convert("RGB")
+
+
+def camera(tl, si, lt, fi, img, tr):
+    """Visual hook: punch-in zoom + shake on the opening frames, smaller punch on every scene change."""
+    hook = tl.spec.get("hook", {})
+    if si == 0: z0, dur, shake = hook.get("punch", 1.2), hook.get("punch_dur", 0.5), hook.get("shake", 14) * max(0, 1 - lt / 0.6)
+    else: z0, dur, shake, lt = tl.spec.get("scene_punch", 1.06), 0.3, 0, lt - tr
+    if lt < 0 or lt >= dur or z0 <= 1: return img
+    z = 1 + (z0 - 1) * (1 - ease(lt / dur)); r = random.Random(fi)
+    cw, ch = W / z, H / z; dx, dy = (r.uniform(-shake, shake), r.uniform(-shake, shake)) if shake else (0, 0)
+    x0 = min(max(0, (W - cw) / 2 + dx), W - cw); y0 = min(max(0, (H - ch) / 2 + dy), H - ch)
+    return img.crop((int(x0), int(y0), int(x0 + cw), int(y0 + ch))).resize((W, H), Image.BICUBIC)
+
+
+def ease(x):
+    x = max(0.0, min(1.0, x)); return 1 - (1 - x) ** 3
 
 
 def render_range(spec_path, work, a, b, out):
