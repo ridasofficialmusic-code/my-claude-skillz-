@@ -21,10 +21,42 @@ def ensure_model():
     return os.path.join(CACHE, "kokoro-v1.0.onnx"), os.path.join(CACHE, "voices-v1.0.bin")
 
 
-def word_times(text, start, end):
-    ws = text.split(); wt = [len(w) + 2 for w in ws]; tot = sum(wt); t = start; out = []
+def _spread(ws, start, end):
+    wt = [len(w) + 2 for w in ws]; tot = sum(wt); t = start; out = []
     for w, x in zip(ws, wt):
         d = (end - start) * x / tot; out.append({"w": w, "s": round(t, 3), "e": round(t + d, 3)}); t += d
+    return out
+
+
+def word_times(text, start, end, audio=None):
+    """Per-word timings. Phrases (split at punctuation) are pinned to the real pauses found in the audio,
+    then words are spread by length inside each phrase, so captions stay in sync through dramatic pauses."""
+    ws = text.split()
+    groups, cur = [], []
+    for w in ws:
+        cur.append(w)
+        if w[-1] in ",.?!:;" or w.endswith("..."): groups.append(cur); cur = []
+    if cur: groups.append(cur)
+    if audio is None or len(groups) < 2: return _spread(ws, start, end)
+    hop = int(SR * 0.01); env = np.sqrt(np.convolve(audio ** 2, np.ones(hop) / hop, "same"))[::hop]
+    quiet = env < max(0.012, 0.08 * np.percentile(env, 95)); gaps = []; i = 0
+    while i < len(quiet):  # silent runs >= 90 ms, away from the edges
+        if quiet[i]:
+            j = i
+            while j < len(quiet) and quiet[j]: j += 1
+            if j - i >= 9 and i > 5 and j < len(quiet) - 5: gaps.append(((i + j) / 2 * 0.01, j - i))
+            i = j
+        else: i += 1
+    need = len(groups) - 1
+    if len(gaps) < need: return _spread(ws, start, end)
+    # choose the `need` longest pauses, in time order, but prefer ones near where length-based spreading expects them
+    chars = [sum(len(w) + 2 for w in g) for g in groups]; tot = sum(chars); dur = end - start
+    expect = np.cumsum(chars)[:-1] / tot * dur; picks = []; avail = list(gaps)
+    for ex in expect:
+        best = max(avail, key=lambda g: g[1] - 25 * abs(g[0] - ex)); picks.append(best[0]); avail.remove(best)
+    picks.sort(); bounds = [0.0] + picks + [dur]; out = []
+    for g, a, b in zip(groups, bounds[:-1], bounds[1:]):
+        out += _spread(g, start + a + (0.03 if a else 0), start + b - (0.05 if b < dur else 0))
     return out
 
 
@@ -42,7 +74,7 @@ def main(script_path, out):
             idx = np.where(np.abs(a) > 0.01)[0]; a = a[max(idx[0] - 240, 0):idx[-1] + 480]
             d = len(a) / SR
             lines.append({"scene": si, "text": txt, "start": round(t, 3), "end": round(t + d, 3),
-                          "words": word_times(txt, t, t + d)})
+                          "words": word_times(txt, t, t + d, a)})
             last = li == len(sc["lines"]) - 1
             gap = gap_scene if (last or txt.endswith(("?", ":"))) else gap_line
             chunks += [a, np.zeros(int(SR * gap))]; t += d + gap

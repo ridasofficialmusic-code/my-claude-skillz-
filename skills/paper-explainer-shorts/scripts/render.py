@@ -457,13 +457,174 @@ def _shower(e, t):
     return cv.im
 
 
+# ---------- Noodle, the channel mascot (the viewer's brain, narrating) ----------
+CURRENT = {"tl": None, "t": 0.0}  # set per frame so mascots can lip-sync to the global voice
+
+
+def voice_level(t):
+    env = getattr(CURRENT["tl"], "env", None)
+    if env is None: return 0.0
+    i = int(t * 100); return float(env[i]) if 0 <= i < len(env) else 0.0
+
+
+def _arm(cv, sh, el, hd, r):
+    cv.line([sh, el, hd], "navy", 0.11 * r); cv.blob(hd[0], hd[1], 0.13 * r, "paper", 301, False)
+
+
+def _held(cv, kind, hx, hy, r, e):
+    if kind == "pickle":
+        cv.poly([(hx + x * 0.42, hy - 0.85 * r + y * 1.1) for x, y in blob_poly(0.75 * r, 311, 40, 0.05)], "green")
+        for k in range(7): cv.blob(hx - 0.13 * r + (k % 2) * 0.26 * r, hy - 1.45 * r + k * 0.17 * r, 0.045 * r, (150, 200, 120), 312 + k, False)
+        for sx in (-1, 1): cv.blob(hx + sx * 0.09 * r, hy - 1.0 * r, 0.045 * r, "ink", 318 + sx, False)
+        cv.line([(hx - 0.08 * r + i * 0.02 * r, hy - 0.85 * r + 0.03 * r * math.sin(i / 8 * math.pi)) for i in range(9)], "ink", 0.03 * r)
+    elif kind == "note":
+        cv.rect(hx - 0.32 * r, hy - 0.95 * r, 0.64 * r, 0.8 * r, "paper", 313)
+        for k in range(3): cv.line([(hx - 0.2 * r, hy - 0.78 * r + k * 0.2 * r), (hx + 0.2 * r, hy - 0.78 * r + k * 0.2 * r)], "sky", 0.04 * r)
+    elif kind == "sign":
+        txt = e.get("sign", "?"); f = F("bold", 0.32 * r); tw = f.getlength(txt) + 0.4 * r
+        cv.line([(hx, hy), (hx, hy - 0.9 * r)], "terra", 0.07 * r)
+        cv.rect(hx - tw / 2, hy - 1.55 * r, tw, 0.7 * r, "paper", 314); cv.text(hx, hy - 1.2 * r, txt, "bold", 0.32 * r, "navy")
+
+
+@prefab("noodle", dynamic=True)
+def _noodle(e, t):
+    r = e.get("r", 150); gt = CURRENT["t"]; mood = e.get("mood", "happy"); pose = e.get("pose", "idle")
+    lvl = voice_level(gt) if e.get("talk", True) else 0.0
+    cv = Canvas(4.6 * r, 5.0 * r); cv.oy += 0.2 * r - lvl * 0.07 * r  # bounce while talking
+    c = e.get("color", "brainpink"); dark = tuple(int(v * 0.75) for v in col(c))
+    walk = math.sin(gt * 11) if pose == "walk" else 0.0
+    for sx in (-1, 1):  # legs + shoes
+        x0 = sx * 0.38 * r; fx = x0 + sx * 0.05 * r + walk * sx * 0.18 * r
+        cv.line([(x0, 0.5 * r), (fx, 1.3 * r)], "navy", 0.13 * r); cv.blob(fx + sx * 0.1 * r, 1.38 * r, 0.17 * r, "terra", 320 + sx, sx=1.5, sy=0.75)
+    cv.blob(-0.45 * r, 0, 0.75 * r, c, 11, sx=1.0, sy=0.85); cv.blob(0.45 * r, 0, 0.75 * r, c, 12, sx=1.0, sy=0.85)
+    cv.blob(0, -0.2 * r, 0.7 * r, c, 13, fringe=False, sx=1.2, sy=0.8)
+    rr = random.Random(5)
+    for k in range(6):
+        sx = -1 if k % 2 else 1; x0, y0 = sx * rr.uniform(0.62, 0.95) * r, rr.uniform(-0.45, 0.35) * r
+        cv.line([(x0 + sx * i * 0.05 * r, y0 + 0.07 * r * math.sin(i * 1.4 + k)) for i in range(5)], dark, 0.045 * r)
+    # eye
+    ex, ey, er = 0, -0.2 * r, 0.4 * r
+    look = e.get("look", {"guilty": [-0.8, 0.35], "think": [0.6, -0.8], "smug": [0.7, 0.1]}.get(mood, [0.1, 0.1]))
+    blink = (gt + 1.3 + e.get("blink_offset", 0)) % 3.7 < 0.09
+    cv.blob(ex, ey, er, "paper", 330, False, n=80, amp=0.01)
+    if blink: cv.line([(ex - er * 0.85, ey + 0.05 * r), (ex + er * 0.85, ey + 0.05 * r)], "ink", 0.06 * r)
+    else:
+        pr = 0.11 * r if mood == "shock" else 0.19 * r; px, py = ex + look[0] * (er - pr - 0.04 * r), ey + look[1] * (er - pr - 0.04 * r)
+        cv.blob(px, py, pr, "ink", 331, False, n=40, amp=0.01); cv.blob(px + 0.35 * pr, py - 0.35 * pr, 0.3 * pr, "paper", 332, False, n=20, amp=0.01)
+        lid = {"guilty": 0.42, "smug": 0.38, "sad": 0.3}.get(mood, 0)
+        if lid:
+            yl = ey - er + 2 * er * lid
+            cv.poly([(ex + er * 1.1 * math.cos(math.radians(a)), min(yl, ey + er * 1.1 * math.sin(math.radians(a)))) for a in range(180, 361, 10)] + [(ex + er * 1.1, yl), (ex - er * 1.1, yl)], c, False)
+            cv.line([(ex - er * 0.95, yl), (ex + er * 0.95, yl)], dark, 0.05 * r)
+    brow = {"guilty": [(-0.35, -0.72), (0.3, -0.8)], "shock": [(-0.3, -0.86), (0.3, -0.86)], "smug": [(-0.3, -0.7), (0.32, -0.84)],
+            "think": [(-0.3, -0.76), (0.3, -0.84)], "sad": [(-0.32, -0.72), (0.3, -0.82)]}.get(mood, [(-0.3, -0.8), (0.3, -0.8)])
+    cv.line([(brow[0][0] * r, brow[0][1] * r), (0, (brow[0][1] + brow[1][1]) / 2 * r - 0.04 * r), (brow[1][0] * r, brow[1][1] * r)], "navy", 0.06 * r)
+    # mouth (lip-synced to the voice)
+    mx, my = 0.05 * r, 0.42 * r
+    if lvl > 0.12:
+        oh = 0.04 * r + 0.2 * r * lvl
+        cv.d.ellipse([mx - 0.17 * r + cv.ox, my - oh / 2 + cv.oy, mx + 0.17 * r + cv.ox, my + oh / 2 + cv.oy], fill=col("ink"))
+        if oh > 0.12 * r: cv.d.ellipse([mx - 0.09 * r + cv.ox, my + cv.oy, mx + 0.09 * r + cv.ox, my + oh / 2 + cv.oy - 2], fill=col("terra"))
+    elif mood == "shock": cv.blob(mx, my, 0.09 * r, "ink", 340, False, sy=1.3)
+    elif mood in ("guilty", "sad"): cv.line([(mx - 0.18 * r + i * 0.04 * r, my + (0.04 if mood == "guilty" else 0.06) * r * math.sin(i * 1.6 if mood == "guilty" else -i / 9 * math.pi)) for i in range(10)], "ink", 0.05 * r)
+    elif mood == "smug": cv.line([(mx - 0.15 * r, my + 0.02 * r), (mx + 0.05 * r, my + 0.04 * r), (mx + 0.2 * r, my - 0.06 * r)], "ink", 0.05 * r)
+    elif mood == "think": cv.line([(mx - 0.05 * r, my), (mx + 0.15 * r, my - 0.02 * r)], "ink", 0.05 * r)
+    else: cv.line([(mx - 0.18 * r + i * 0.04 * r, my + 0.07 * r * math.sin(i / 9 * math.pi)) for i in range(10)], "ink", 0.05 * r)
+    if mood == "guilty": cv.poly([(0.95 * r, -0.85 * r), (1.08 * r, -0.55 * r), (0.95 * r, -0.47 * r), (0.82 * r, -0.55 * r)], "sky", False)
+    if mood in ("guilty", "shock"):
+        for sx in (-1, 1): cv.blob(sx * 0.62 * r, 0.3 * r, 0.14 * r, "blush", 350 + sx, False, sy=0.6)
+    # arms by pose
+    L, R = (-1.0 * r, 0.2 * r), (1.0 * r, 0.2 * r); idle = lambda s: ((s * 1.2 * r, 0.55 * r), (s * 1.3 * r, 0.85 * r))
+    arms = {"idle": (idle(-1), idle(1)),
+            "wave": (idle(-1), ((1.45 * r, -0.1 * r), (1.6 * r + 0.12 * r * math.sin(gt * 14), -0.75 * r))),
+            "point": (idle(-1), ((1.45 * r, 0.1 * r), (1.95 * r, -0.05 * r))),
+            "point_left": (((-1.45 * r, 0.1 * r), (-1.95 * r, -0.05 * r)), idle(1)),
+            "shrug": (((-1.45 * r, 0.5 * r), (-1.65 * r, -0.2 * r)), ((1.45 * r, 0.5 * r), (1.65 * r, -0.2 * r))),
+            "hold": (idle(-1), ((1.45 * r, 0.05 * r), (1.5 * r, -0.45 * r))),
+            "think": (idle(-1), ((1.25 * r, 0.95 * r), (0.4 * r, 0.7 * r))),
+            "walk": (((-1.2 * r, 0.55 * r), (-1.3 * r - walk * 0.2 * r, 0.85 * r)), ((1.2 * r, 0.55 * r), (1.3 * r + walk * 0.2 * r, 0.85 * r)))}[pose]
+    _arm(cv, L, *arms[0], r); _arm(cv, R, *arms[1], r)
+    if e.get("hold"): _held(cv, e["hold"], arms[1][1][0], arms[1][1][1], r, e)
+    return cv.im
+
+
+@prefab("door", dynamic=True)
+def _door(e, t):
+    w, h = e.get("w", 340), e.get("h", 620); cv = Canvas(w + 80, h + 60); x0, y0 = -w / 2, -h / 2
+    sw = e.get("swing")  # [from, to, seconds]
+    op = e.get("open", 0.6) if not sw else sw[0] + (sw[1] - sw[0]) * ease(t / sw[2])
+    cv.rect(x0 - 22, y0 - 22, w + 44, h + 30, e.get("frame", "terra"), 360)
+    cv.rect(x0, y0, w, h, e.get("inside", "night"), 361, False, 18, 2)
+    pw = w * (1 - 0.78 * op); sk = op * 0.07 * h
+    cv.poly([(x0, y0), (x0 + pw, y0 + sk), (x0 + pw, y0 + h - sk), (x0, y0 + h)], e.get("color", "mustard"))
+    if pw > 0.3 * w:
+        for k in (0.12, 0.55): cv.rect(x0 + pw * 0.15, y0 + h * k + sk * 0.5, pw * 0.7, h * 0.3 - sk, tuple(int(v * 0.9) for v in col(e.get("color", "mustard"))), 362, False, 16, 2)
+    cv.blob(x0 + pw * 0.85, y0 + h * 0.52, 0.03 * w + 6, "navy", 363, False)
+    return cv.im
+
+
+@prefab("pickle")
+def _pickle(e, t):
+    r = e.get("r", 140); cv = Canvas(1.4 * r, 2.6 * r)
+    cv.poly([(x * 0.45, y * 1.0) for x, y in blob_poly(r, 371, 50, 0.04)], "green")
+    rr = random.Random(372)
+    for k in range(9): cv.blob(rr.uniform(-0.25, 0.25) * r, rr.uniform(-0.8, 0.8) * r, 0.05 * r, (150, 200, 120), 373 + k, False)
+    if e.get("face", True):
+        for sx in (-1, 1): cv.blob(sx * 0.13 * r, -0.25 * r, 0.06 * r, "ink", 380 + sx, False)
+        cv.line([(-0.1 * r + i * 0.025 * r, -0.08 * r + 0.04 * r * math.sin(i / 8 * math.pi)) for i in range(9)], "ink", 0.035 * r)
+    return cv.im
+
+
+@prefab("shreds", dynamic=True)
+def _shreds(e, t):
+    sp, fall = e.get("spread", 320), e.get("fall", 700); cv = Canvas(2 * sp + 120, fall + 120); rr = random.Random(e.get("seed", 9))
+    cols = e.get("colors", ["paper", "paper", "sky"])
+    for k in range(e.get("count", 14)):
+        vx = rr.uniform(-1, 1) * sp; delay = rr.uniform(0, 0.6); tt = max(0, t - delay); f = min(1, tt / rr.uniform(1.2, 2.2))
+        x = vx * min(1, tt * 1.5) + 18 * math.sin(tt * 5 + k); y = -fall / 2 + f * fall
+        a = tt * rr.uniform(-300, 300); w, hh = rr.uniform(18, 34), rr.uniform(26, 50); ca, sa = math.cos(math.radians(a)), math.sin(math.radians(a))
+        pts = [(x + px * ca - py * sa, y + px * sa + py * ca) for px, py in ((-w / 2, -hh / 2), (w / 2, -hh / 2), (w / 2, hh / 2), (-w / 2, hh / 2))]
+        cv.poly(pts, cols[k % len(cols)], False)
+    return cv.im
+
+
+@prefab("scissors", dynamic=True)
+def _scissors(e, t):
+    s = e.get("s", 1.0); cv = Canvas(520 * s, 420 * s); ang = e.get("snip", True) and 16 * (0.5 + 0.5 * math.sin(t * 12)) or 14
+    for sgn, hc in ((1, "terra"), (-1, "teal")):
+        a = math.radians(sgn * ang); ca, sa = math.cos(a), math.sin(a)
+        rot = lambda px, py: (px * ca - py * sa, px * sa + py * ca)
+        cv.poly([rot(x * s, y * s) for x, y in ((-10, -12 * sgn), (230, -4 * sgn), (235, 4 * sgn), (-10, 10 * sgn))], (205, 210, 220), False)
+        hx, hy = rot(-120 * s, 40 * sgn * s); cv.blob(hx, hy, 62 * s, hc, 390 + sgn, sx=1.25, sy=0.9)
+        cv.d.ellipse([hx - 30 * s + cv.ox, hy - 20 * s + cv.oy, hx + 30 * s + cv.ox, hy + 20 * s + cv.oy], fill=(0, 0, 0, 0))
+        cv.line([rot(-40 * s, 10 * sgn * s), (hx, hy)], hc, 34 * s)
+    cv.blob(0, 0, 12 * s, "navy", 395, False); return cv.im
+
+
+@prefab("box")
+def _box(e, t):
+    w, h = e.get("w", 440), e.get("h", 270); cv = Canvas(w + 60, h + 140); c = e.get("color", "terra"); dark = tuple(int(v * 0.7) for v in col(c))
+    if e.get("part", "front") == "back":
+        cv.poly([(-w / 2, -h / 2), (-w / 2 + 40, -h / 2 - 60), (w / 2 - 40, -h / 2 - 60), (w / 2, -h / 2)], dark)
+    else:
+        cv.rect(-w / 2, -h / 2, w, h, c, 401)
+        if e.get("text"): cv.text(0, 0, e["text"], "bold", e.get("size", 64), e.get("fg", "paper"))
+    return cv.im
+
+
 # ---------- timeline ----------
 def norm(w): return re.sub(r"[^a-z0-9%#]", "", w.lower())
 
 
 class Timeline:
-    def __init__(s, spec, timing):
-        s.spec, s.lines = spec, timing["lines"]; s.dur = spec.get("duration", 60.0)
+    def __init__(s, spec, timing, work=None):
+        s.spec, s.lines = spec, timing["lines"]; s.dur = spec.get("duration", 60.0); s.env = None
+        vp = os.path.join(work, "voice.wav") if work else None
+        if vp and os.path.exists(vp):  # 10 ms loudness envelope for mascot lip-sync
+            import soundfile as sf
+            v, vsr = sf.read(vp); hop = vsr // 100; n = len(v) // hop
+            rms = np.sqrt((v[:n * hop].reshape(n, hop) ** 2).mean(1)); rms = np.convolve(rms, np.ones(4) / 4, "same")
+            s.env = np.clip(rms / (np.percentile(rms, 95) + 1e-6), 0, 1)
         n = len(spec["scenes"]); starts = []
         for i in range(n):
             ls = [l for l in s.lines if l["scene"] == i]
@@ -487,8 +648,10 @@ class Timeline:
         lm = re.match(r"^line(\d+)$", key)
         sl = [l for l in s.lines if l["scene"] == si]
         if lm: return sl[int(lm.group(1))]["start"] - base + off
-        km = re.match(r"^(.*?)(?:#(\d+))?$", key); target, nth = norm(km.group(1)), int(km.group(2) or 1)
-        hits = [w for w in s.words if w["scene"] == si and norm(w["w"]).startswith(target)]
+        km = re.match(r"^(.*?)(?:@(\d+))?(?:#(\d+))?$", key); target, nth = norm(km.group(1)), int(km.group(3) or 1)
+        lines_in = [li for li, l in enumerate(s.lines) if l["scene"] == si]
+        only = lines_in[int(km.group(2))] if km.group(2) else None
+        hits = [w for w in s.words if w["scene"] == si and (only is None or w["line"] == only) and norm(w["w"]).startswith(target)]
         if len(hits) < nth: raise ValueError(f"scene {si}: word anchor '{v}' not found")
         return hits[nth - 1]["s"] - base + off
 
@@ -536,7 +699,7 @@ def draw_elements(tl, si, lt, canvas, shadow, fi, first_scene_instant=True):
         elif anim.startswith("slide"):
             p = 1 - (1 - min(1, x / 0.45)) ** 3; dx, dy = {"slide_left": (-1100, 0), "slide_right": (1100, 0), "slide_up": (0, 1400), "slide_down": (0, -1400)}[anim]
             cx += dx * (1 - p); cy += dy * (1 - p)
-        if "from" in e:  # glide from another position (works on frame 1, unlike entrance anims)
+        if isinstance(e.get("from"), list):  # glide from another position (works on frame 1); counters use a numeric "from"
             p = ease((lt - max(st, 0)) / e.get("move_dur", 1.0)); fx, fy = e["from"]
             cx, cy = fx + (cx - fx) * p, fy + (cy - fy) * p
         if lt > en: s *= max(0, 1 - (lt - en) / 0.3)
@@ -547,10 +710,11 @@ def draw_elements(tl, si, lt, canvas, shadow, fi, first_scene_instant=True):
         elif loop == "pulse": s *= 1 + 0.06 * math.sin(lt * 7)
         elif loop == "wiggle": rot += r.uniform(-3, 3)
         if e.get("jitter", True): cx += r.uniform(-3, 3); cy += r.uniform(-3, 3); rot += r.uniform(-1.2, 1.2)
-        place(canvas, shadow, sprite_for(e, max(0, x)), cx, cy, rot, s, e["type"] != "spotlight")
+        place(canvas, shadow, sprite_for(e, max(0.0, lt - max(st, 0.0))), cx, cy, rot, s, e["type"] != "spotlight")
 
 
 def draw_captions(tl, t, canvas, shadow, y=1400, size=78):
+    if tl.spec.get("caption_style") == "marker": return draw_captions_marker(tl, t, canvas, shadow, tl.spec.get("caption_y", 1330), size + 4)
     words = tl.words; act = None; chunks = getattr(tl, "_chunks", None)
     if chunks is None:
         chunks = []; cur = []
@@ -580,13 +744,54 @@ def draw_captions(tl, t, canvas, shadow, y=1400, size=78):
         canvas.alpha_composite(rim, (int(x), int(yy))); x += im.width + 4
 
 
+def draw_captions_marker(tl, t, canvas, shadow, y=1400, size=78):
+    """Humanised captions: handwritten words on one torn strip per phrase, normal case,
+    a highlighter swipe on the word being spoken, emphasis words in terracotta."""
+    words = tl.words; chunks = getattr(tl, "_mchunks", None)
+    if chunks is None:
+        chunks = []; cur = []
+        for i, w in enumerate(words):
+            if cur and (words[cur[-1]]["line"] != w["line"] or len(cur) >= 4): chunks.append(cur); cur = []
+            cur.append(i)
+            if w["w"][-1] in ",.?:!": chunks.append(cur); cur = []
+        if cur: chunks.append(cur)
+        tl._mchunks = chunks
+    act = None
+    for c in chunks:
+        if words[c[0]]["s"] - 0.05 <= t < words[c[-1]]["e"] + 0.2: act = c
+    if not act: return
+    shown = [i for i in act if words[i]["s"] <= t + 0.06]; cur = shown[-1] if shown else None
+    emph = [norm(x) for x in tl.spec.get("emphasis", [])]
+    key = ("mcap", act[0], len(shown), cur if cur is not None and t < words[cur]["e"] + 0.1 else -1, size)
+    if key not in _cache:
+        f = F("marker", size); act = shown or act[:1]; toks = [words[i]["w"] for i in act]; sp = f.getlength(" ")
+        widths = [f.getlength(w) for w in toks]; tw = sum(widths) + sp * (len(toks) - 1); pad = size * 0.45
+        im = Image.new("RGBA", (int(tw + 2 * pad + 40), int(size * 1.9)), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+        poly = [(x + 20, yy + 14) for x, yy in torn_poly(tw + 2 * pad, size * 1.55, 500 + act[0], 16, 4)]
+        d.polygon([(x + (3 if x > im.width / 2 else -3), yy + (3 if yy > im.height / 2 else -3)) for x, yy in poly], fill=PAPER)
+        d.polygon(poly, fill=(252, 248, 238)); x = 20 + pad; base = 14 + size * 0.78
+        for i, w, wd in zip(act, toks, widths):
+            if i in shown:
+                if key[3] == i:  # highlighter swipe
+                    d.polygon([(x - 8, base - size * 0.42), (x + wd + 8, base - size * 0.48), (x + wd + 6, base + size * 0.4), (x - 6, base + size * 0.44)], fill=(244, 196, 70, 230))
+                hot = any(norm(w).startswith(e) for e in emph)
+                d.text((x, base), w, font=f, fill=col("terra" if hot else "ink"), anchor="lm")
+            x += wd + sp
+        _cache[key] = texturize(im.rotate((act[0] * 37 % 5 - 2) * 0.8, expand=True, resample=Image.BICUBIC))
+    im = _cache[key]
+    mw = tl.spec.get("caption_max_w", 880)  # stays clear of TikTok's right-hand buttons
+    if im.width > mw: im = im.resize((mw, int(im.height * mw / im.width)))
+    x, yy = int(tl.spec.get("caption_x", 515) - im.width / 2), int(y - im.height / 2)
+    shadow.paste((0, 0, 0, 255), (x + 7, yy + 10), im.split()[3].point(lambda v: v * 0.45)); canvas.alpha_composite(im, (x, yy))
+
+
 def scene_layers(tl, si, lt, fi):
     canvas = Image.new("RGBA", (W, H), (0, 0, 0, 0)); shadow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     draw_elements(tl, si, lt, canvas, shadow, fi); return canvas, shadow
 
 
 def frame(tl, t):
-    fi = int(t * ANIM_FPS); t = fi / ANIM_FPS
+    fi = int(t * ANIM_FPS); t = fi / ANIM_FPS; CURRENT["tl"], CURRENT["t"] = tl, t
     si = tl.scene_at(t); lt = t - tl.starts[si]; spec = tl.spec["scenes"][si]
     out = background(spec.get("bg", "cream")).copy()
     canvas, shadow = scene_layers(tl, si, lt, fi)
@@ -630,7 +835,7 @@ def ease(x):
 
 
 def render_range(spec_path, work, a, b, out):
-    spec = json.load(open(spec_path)); tl = Timeline(spec, json.load(open(os.path.join(work, "timing.json"))))
+    spec = json.load(open(spec_path)); tl = Timeline(spec, json.load(open(os.path.join(work, "timing.json"))), work)
     p = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
                           "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", out], stdin=subprocess.PIPE)
     last, lk = None, None; step = FPS // ANIM_FPS if FPS % ANIM_FPS == 0 else 1
@@ -669,6 +874,6 @@ if __name__ == "__main__":
     if mode == "video": render_video(spec_path, work, int(sys.argv[4]) if len(sys.argv) > 4 else os.cpu_count() or 4)
     elif mode == "range": render_range(spec_path, work, int(sys.argv[4]), int(sys.argv[5]), sys.argv[6])
     elif mode == "still":
-        spec = json.load(open(spec_path)); tl = Timeline(spec, json.load(open(os.path.join(work, "timing.json"))))
+        spec = json.load(open(spec_path)); tl = Timeline(spec, json.load(open(os.path.join(work, "timing.json"))), work)
         frame(tl, float(sys.argv[4])).save(sys.argv[5])
     elif mode == "thumbs": render_thumbs(spec_path, work)

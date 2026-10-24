@@ -39,7 +39,15 @@ In 60 seconds:
 - **Language:** English · **Caption certification:** None (captions are burned in)
 - **Playlist:** "Weird Being Human: Brain Quirks"
 
-## Pinned comment
+## TikTok
+```
+{{lowercase, chatty caption with the search phrase in it + the open-loop question}} #psychology #brainfacts #{{topic}} #relatable
+```
+- Upload the original mp4 (no cross-platform watermarks). Rename the original sound to "Noodle confesses: Brain Confessions".
+- AI label: on is the low-risk choice (AI narrator), even though it's a cartoon.
+- Answer the best comments with video replies.
+- Creator Rewards needs 1 min+. Note whether this cut qualifies.
+
 ```
 {{Your own short answer to the CTA question, funny and specific}} What's yours?
 ```

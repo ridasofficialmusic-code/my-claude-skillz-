@@ -59,6 +59,16 @@ Fill in `templates/upload-kit.md`: 3 title options (≤ 70 chars, with the hook 
 ### 8. Deliver
 Save the files to `AI CONTENT/testers/NN-<slug>/` in the repo (the next number in sequence): the video, voiceover, both thumbnails and `upload-kit.md`, plus the final `script.json` so the video can be re-rendered. Commit, push, and send the video, thumbnails and kit to the user.
 
+## Noodle: the mascot narrator (default format: "Brain Confessions")
+Noodle is the one-eyed paper brain from the logo, and **the viewer's own brain, talking in first person**. Every script is a confession: Noodle did the weird thing to you, admits it, explains why, gives a tip, and loops ("…yeah, that was me again").
+- **Voice:** casual, self-aware, a bit guilty and a bit smug. Short sentences, real pauses ("…"), asides ("Sorry."), specific everyday details ("the kitchen"), and one silly running gag per video. Write it the way a friend talks, not the way an article reads.
+- **Must-haves:** Noodle on frame 1 mid-reaction, its intro on the 2nd line ("Hi. I'm Noodle. Your brain."), and an **interactive open loop** paid off at the end (a word to remember, a guess, a count).
+- **Captions:** use `"caption_style": "marker"` with 10–20 `emphasis` words.
+- **Spec:** `noodle` element in `reference/scene-spec.md`; reference video `AI CONTENT/testers/04-why-did-i-come-in-here/script.json`.
+
+## TikTok + YouTube safe zones
+Videos go to both platforms. Keep text and key visuals **out of x > 930 between y 760 and 1500** (TikTok's buttons), **below y 1500** (captions, usernames and YouTube's bar), and **above y 130**. `preview.py` shades these zones red on the preview sheet. The upload kit covers both platforms: a YouTube title, description and tags, plus a TikTok caption with 3–5 hashtags, settings and a note on the AI label.
+
 ## Style rules (keep the channel recognisable)
 - Fonts: **Bowlby One** for labels and captions, **Permanent Marker** for handwritten asides.
 - Palette names: `cream paper mustard terra teal navy sky pink red green night ink`.

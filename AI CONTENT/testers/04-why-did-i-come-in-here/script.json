@@ -1,0 +1,1000 @@
+{
+ "topic": "Why you forget why you walked into a room",
+ "slug": "why-did-i-come-in-here",
+ "series": "Brain Confessions",
+ "voice": "af_heart",
+ "speed": 1.05,
+ "gap_line": 0.32,
+ "gap_scene": 0.5,
+ "lead_in": 0.05,
+ "hook": {
+  "speed": 1.08,
+  "punch": 1.15,
+  "shake": 12,
+  "caption_size": 84
+ },
+ "caption_style": "marker",
+ "scenes": [
+  {
+   "name": "hook",
+   "bg": "cream",
+   "lines": [
+    "You walked into the kitchen for something... and I deleted it.",
+    "Sorry. Hi. I'm Noodle. Your brain.",
+    "Quick, hold this word for me. Pickle. I'll ask for it later."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "WHY DID I",
+     "size": 72,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 255,
+     "rot": -3,
+     "out": "Sorry-0.05"
+    },
+    {
+     "type": "label",
+     "text": "COME IN HERE?",
+     "size": 90,
+     "color": "terra",
+     "fg": "paper",
+     "x": 540,
+     "y": 370,
+     "rot": 2,
+     "out": "Sorry-0.05"
+    },
+    {
+     "type": "door",
+     "x": 250,
+     "y": 840,
+     "w": 290,
+     "h": 540,
+     "swing": [
+      0.95,
+      0.2,
+      0.9
+     ]
+    },
+    {
+     "type": "shreds",
+     "x": 860,
+     "y": 1000,
+     "spread": 170,
+     "fall": 560,
+     "count": 6,
+     "seed": 3,
+     "out": "Hi-0.05"
+    },
+    {
+     "type": "noodle",
+     "x": 640,
+     "y": 870,
+     "r": 150,
+     "mood": "guilty",
+     "pose": "hold",
+     "anim": "none",
+     "hold": "note",
+     "out": "deleted-0.05"
+    },
+    {
+     "type": "noodle",
+     "x": 640,
+     "y": 870,
+     "r": 150,
+     "mood": "guilty",
+     "pose": "shrug",
+     "anim": "none",
+     "at": "deleted",
+     "out": "Hi-0.05"
+    },
+    {
+     "type": "shreds",
+     "x": 860,
+     "y": 1020,
+     "spread": 260,
+     "fall": 600,
+     "count": 18,
+     "seed": 4,
+     "at": "deleted",
+     "out": "Hi-0.05",
+     "anim": "none"
+    },
+    {
+     "type": "noodle",
+     "x": 640,
+     "y": 870,
+     "r": 150,
+     "mood": "happy",
+     "pose": "wave",
+     "anim": "none",
+     "at": "Hi",
+     "out": "Quick-0.05"
+    },
+    {
+     "type": "label",
+     "text": "NOODLE",
+     "size": 130,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 280,
+     "rot": -3,
+     "at": "Noodle",
+     "out": "Quick-0.05"
+    },
+    {
+     "type": "label",
+     "text": "(your brain)",
+     "size": 64,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 410,
+     "rot": 2,
+     "font": "marker",
+     "at": "brain",
+     "out": "Quick-0.05"
+    },
+    {
+     "type": "noodle",
+     "x": 640,
+     "y": 870,
+     "r": 150,
+     "mood": "happy",
+     "pose": "point",
+     "anim": "none",
+     "at": "Quick",
+     "out": "Pickle-0.05"
+    },
+    {
+     "type": "label",
+     "text": "hold this word for me",
+     "size": 62,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 300,
+     "rot": -2,
+     "font": "marker",
+     "at": "hold",
+     "out": "Pickle-0.05"
+    },
+    {
+     "type": "noodle",
+     "x": 600,
+     "y": 870,
+     "r": 150,
+     "mood": "smug",
+     "pose": "hold",
+     "anim": "none",
+     "hold": "pickle",
+     "at": "Pickle"
+    },
+    {
+     "type": "label",
+     "text": "PICKLE",
+     "size": 150,
+     "color": "green",
+     "fg": "paper",
+     "x": 540,
+     "y": 300,
+     "rot": -4,
+     "at": "Pickle"
+    },
+    {
+     "type": "label",
+     "text": "(I'll ask later)",
+     "size": 58,
+     "color": "pink",
+     "fg": "navy",
+     "x": 540,
+     "y": 445,
+     "rot": 3,
+     "font": "marker",
+     "at": "later"
+    }
+   ]
+  },
+  {
+   "name": "reason",
+   "bg": "sky",
+   "lines": [
+    "Okay, so here's what actually happened.",
+    "To me, a doorway is a save point, like in a video game.",
+    "You walk through, and I go: new room, new scene. And I file the old one away.",
+    "Including the reason you got up."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "WHAT ACTUALLY HAPPENED",
+     "size": 66,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 290,
+     "rot": -2,
+     "out": "line1-0.05"
+    },
+    {
+     "type": "noodle",
+     "x": 540,
+     "y": 860,
+     "r": 150,
+     "mood": "think",
+     "pose": "think",
+     "anim": "none",
+     "out": "line1-0.05"
+    },
+    {
+     "type": "door",
+     "x": 290,
+     "y": 830,
+     "w": 280,
+     "h": 500,
+     "open": 0.55,
+     "at": "doorway",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "noodle",
+     "x": 740,
+     "y": 870,
+     "r": 135,
+     "mood": "happy",
+     "pose": "point_left",
+     "anim": "none",
+     "at": "doorway",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "label",
+     "text": "SAVE POINT",
+     "size": 120,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 300,
+     "rot": -3,
+     "at": "save",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "counter",
+     "prefix": "SAVING... ",
+     "suffix": "%",
+     "from": 0,
+     "to": 100,
+     "dur": 1.6,
+     "size": 56,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 440,
+     "at": "save+0.2",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "door",
+     "x": 540,
+     "y": 780,
+     "w": 300,
+     "h": 520,
+     "swing": [
+      0.15,
+      1.0,
+      0.5
+     ],
+     "at": "line2",
+     "out": "file-0.05"
+    },
+    {
+     "type": "noodle",
+     "x": 760,
+     "y": 880,
+     "r": 130,
+     "mood": "happy",
+     "pose": "walk",
+     "anim": "none",
+     "at": "line2",
+     "out": "file-0.05",
+     "from": [
+      1000,
+      880
+     ],
+     "move_dur": 1.0
+    },
+    {
+     "type": "label",
+     "text": "NEW ROOM.",
+     "size": 100,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 300,
+     "rot": -3,
+     "at": "new",
+     "out": "file-0.05"
+    },
+    {
+     "type": "label",
+     "text": "NEW SCENE.",
+     "size": 100,
+     "color": "terra",
+     "fg": "paper",
+     "x": 540,
+     "y": 430,
+     "rot": 2,
+     "at": "scene",
+     "out": "file-0.05"
+    },
+    {
+     "type": "box",
+     "part": "back",
+     "x": 540,
+     "y": 1010,
+     "w": 480,
+     "h": 260,
+     "at": "file"
+    },
+    {
+     "type": "label",
+     "text": "the old room",
+     "size": 60,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 990,
+     "rot": 0,
+     "font": "marker",
+     "at": "file",
+     "anim": "none",
+     "from": [
+      540,
+      520
+     ],
+     "move_dur": 0.9
+    },
+    {
+     "type": "label",
+     "text": "why you got up",
+     "size": 60,
+     "color": "pink",
+     "fg": "navy",
+     "x": 560,
+     "y": 975,
+     "rot": -4,
+     "font": "marker",
+     "at": "Including",
+     "anim": "none",
+     "from": [
+      560,
+      480
+     ],
+     "move_dur": 0.9
+    },
+    {
+     "type": "box",
+     "part": "front",
+     "text": "ARCHIVE",
+     "x": 540,
+     "y": 1030,
+     "w": 480,
+     "h": 260,
+     "at": "file"
+    },
+    {
+     "type": "label",
+     "text": "FILED AWAY",
+     "size": 100,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 300,
+     "rot": -2,
+     "at": "away"
+    },
+    {
+     "type": "noodle",
+     "x": 790,
+     "y": 600,
+     "r": 105,
+     "mood": "smug",
+     "pose": "point_left",
+     "anim": "none",
+     "at": "file",
+     "out": "Including-0.05"
+    },
+    {
+     "type": "noodle",
+     "x": 790,
+     "y": 600,
+     "r": 105,
+     "mood": "guilty",
+     "pose": "shrug",
+     "anim": "none",
+     "at": "Including"
+    }
+   ]
+  },
+  {
+   "name": "turn",
+   "bg": "red",
+   "lines": [
+    "But don't just take my word for it. Scientists tested this."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "BUT...",
+     "size": 210,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 420,
+     "rot": -4,
+     "loop": "shake"
+    },
+    {
+     "type": "label",
+     "text": "DON'T TAKE MY WORD FOR IT",
+     "size": 56,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 620,
+     "rot": 2,
+     "at": "take"
+    },
+    {
+     "type": "label",
+     "text": "SCIENTISTS TESTED THIS",
+     "size": 62,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 740,
+     "rot": -2,
+     "at": "Scientists"
+    },
+    {
+     "type": "noodle",
+     "x": 540,
+     "y": 1030,
+     "r": 115,
+     "mood": "smug",
+     "pose": "point",
+     "anim": "none",
+     "talk": true
+    }
+   ]
+  },
+  {
+   "name": "study",
+   "bg": "cream",
+   "lines": [
+    "They had people carry stuff around a virtual house.",
+    "The ones who walked through a doorway forgot more than the ones who walked the same distance in one room.",
+    "Same steps. One door. More forgetting."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "THE STUDY",
+     "size": 96,
+     "color": "navy",
+     "fg": "paper",
+     "x": 540,
+     "y": 290,
+     "rot": -3
+    },
+    {
+     "type": "panel",
+     "w": 820,
+     "h": 560,
+     "color": "night",
+     "x": 540,
+     "y": 780,
+     "seed": 8,
+     "out": "line1-0.05"
+    },
+    {
+     "type": "door",
+     "x": 700,
+     "y": 800,
+     "w": 190,
+     "h": 360,
+     "open": 0.6,
+     "inside": "ink",
+     "out": "line1-0.05"
+    },
+    {
+     "type": "person",
+     "mood": "neutral",
+     "x": 400,
+     "y": 850,
+     "r": 62,
+     "color": "teal",
+     "at": "carry",
+     "out": "line1-0.05",
+     "from": [
+      250,
+      850
+     ],
+     "move_dur": 1.6
+    },
+    {
+     "type": "box",
+     "part": "front",
+     "x": 470,
+     "y": 900,
+     "w": 110,
+     "h": 80,
+     "color": "mustard",
+     "at": "carry",
+     "out": "line1-0.05",
+     "from": [
+      320,
+      900
+     ],
+     "move_dur": 1.6
+    },
+    {
+     "type": "label",
+     "text": "virtual house",
+     "size": 60,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 1110,
+     "rot": -2,
+     "font": "marker",
+     "at": "virtual",
+     "out": "line1-0.05"
+    },
+    {
+     "type": "label",
+     "text": "THROUGH A DOOR",
+     "size": 50,
+     "color": "terra",
+     "fg": "paper",
+     "x": 730,
+     "y": 430,
+     "rot": 2,
+     "at": "doorway",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "door",
+     "x": 660,
+     "y": 860,
+     "w": 200,
+     "h": 380,
+     "open": 0.7,
+     "at": "doorway",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "person",
+     "mood": "neutral",
+     "x": 820,
+     "y": 900,
+     "r": 70,
+     "color": "terra",
+     "at": "doorway+0.2",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "bubble",
+     "text": "wait... what?",
+     "size": 48,
+     "x": 760,
+     "y": 600,
+     "tail": "left",
+     "at": "forgot",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "label",
+     "text": "ONE ROOM",
+     "size": 54,
+     "color": "navy",
+     "fg": "paper",
+     "x": 270,
+     "y": 430,
+     "rot": -2,
+     "at": "same",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 270,
+     "y": 900,
+     "r": 70,
+     "color": "teal",
+     "at": "same+0.1",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "bubble",
+     "text": "got it!",
+     "size": 48,
+     "x": 290,
+     "y": 620,
+     "tail": "left",
+     "at": "room",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "label",
+     "text": "SAME STEPS.",
+     "size": 96,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 480,
+     "rot": -3,
+     "at": "Same@2"
+    },
+    {
+     "type": "label",
+     "text": "ONE DOOR.",
+     "size": 96,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 630,
+     "rot": 2,
+     "at": "One@2"
+    },
+    {
+     "type": "label",
+     "text": "MORE FORGETTING.",
+     "size": 92,
+     "color": "terra",
+     "fg": "paper",
+     "x": 540,
+     "y": 790,
+     "rot": -2,
+     "at": "More@2",
+     "loop": "shake",
+     "shake_for": 0.5
+    },
+    {
+     "type": "noodle",
+     "x": 540,
+     "y": 1060,
+     "r": 95,
+     "mood": "smug",
+     "pose": "shrug",
+     "anim": "none",
+     "at": "Same@2"
+    }
+   ]
+  },
+  {
+   "name": "fix",
+   "bg": "night",
+   "lines": [
+    "So here's my tip.",
+    "Say it out loud before you go. Scissors, scissors, scissors. Like a weirdo.",
+    "It actually works. Saying things out loud helps them stick. It's called the production effect."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "NOODLE'S TIP",
+     "size": 100,
+     "color": "green",
+     "fg": "paper",
+     "x": 540,
+     "y": 290,
+     "rot": -3
+    },
+    {
+     "type": "noodle",
+     "x": 540,
+     "y": 840,
+     "r": 160,
+     "mood": "happy",
+     "pose": "point",
+     "anim": "none",
+     "out": "Scissors-0.05"
+    },
+    {
+     "type": "label",
+     "text": "SAY IT OUT LOUD",
+     "size": 84,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 440,
+     "rot": 2,
+     "at": "Say"
+    },
+    {
+     "type": "person",
+     "mood": "happy",
+     "x": 320,
+     "y": 930,
+     "r": 100,
+     "color": "teal",
+     "at": "Scissors",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "bubble",
+     "text": "scissors! scissors! scissors!",
+     "size": 50,
+     "maxw": 440,
+     "x": 690,
+     "y": 640,
+     "tail": "left",
+     "at": "Scissors",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "scissors",
+     "s": 0.9,
+     "x": 700,
+     "y": 1000,
+     "rot": 20,
+     "at": "Scissors+0.2",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "label",
+     "text": "(like a weirdo)",
+     "size": 58,
+     "color": "pink",
+     "fg": "navy",
+     "x": 700,
+     "y": 1170,
+     "rot": -3,
+     "font": "marker",
+     "at": "weirdo",
+     "out": "line2-0.05"
+    },
+    {
+     "type": "noodle",
+     "x": 540,
+     "y": 860,
+     "r": 150,
+     "mood": "smug",
+     "pose": "shrug",
+     "anim": "none",
+     "at": "line2"
+    },
+    {
+     "type": "badge",
+     "kind": "check",
+     "r": 70,
+     "x": 820,
+     "y": 600,
+     "at": "works"
+    },
+    {
+     "type": "label",
+     "text": "THE PRODUCTION EFFECT",
+     "size": 60,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 1150,
+     "rot": -2,
+     "at": "production"
+    }
+   ]
+  },
+  {
+   "name": "cta",
+   "bg": "teal",
+   "lines": [
+    "Now. What was the word I asked you to hold?",
+    "Got it? Comment it. Didn't? Yeah... that was me again."
+   ],
+   "elements": [
+    {
+     "type": "label",
+     "text": "WHAT WAS THE WORD?",
+     "size": 76,
+     "color": "mustard",
+     "fg": "navy",
+     "x": 540,
+     "y": 290,
+     "rot": -3,
+     "at": "What",
+     "out": "Didn't-0.05"
+    },
+    {
+     "type": "label",
+     "text": "_ _ _ _ _ _",
+     "size": 110,
+     "color": "paper",
+     "fg": "navy",
+     "x": 540,
+     "y": 430,
+     "rot": 1,
+     "at": "word"
+    },
+    {
+     "type": "noodle",
+     "x": 540,
+     "y": 790,
+     "r": 135,
+     "mood": "think",
+     "pose": "think",
+     "anim": "none",
+     "out": "Didn't-0.05"
+    },
+    {
+     "type": "noodle",
+     "x": 540,
+     "y": 790,
+     "r": 135,
+     "mood": "guilty",
+     "pose": "shrug",
+     "anim": "none",
+     "at": "Didn't"
+    },
+    {
+     "type": "comment",
+     "user": "@you",
+     "text": "it was... uh...",
+     "x": 520,
+     "y": 1100,
+     "w": 800,
+     "at": "Comment",
+     "anim": "slide_left"
+    },
+    {
+     "type": "follow",
+     "size": 66,
+     "x": 540,
+     "y": 290,
+     "loop": "pulse",
+     "at": "Didn't"
+    }
+   ]
+  }
+ ],
+ "emphasis": [
+  "deleted",
+  "noodle",
+  "pickle",
+  "save",
+  "file",
+  "away",
+  "reason",
+  "doorway",
+  "forgot",
+  "door",
+  "forgetting",
+  "loud",
+  "weirdo",
+  "stick",
+  "production",
+  "again",
+  "word"
+ ],
+ "duration": 53.2,
+ "thumbnail": {
+  "bg": "cream",
+  "vertical": [
+   {
+    "type": "label",
+    "text": "WHY DID I",
+    "size": 110,
+    "color": "paper",
+    "fg": "navy",
+    "x": 540,
+    "y": 300,
+    "rot": -3
+   },
+   {
+    "type": "label",
+    "text": "COME IN HERE?",
+    "size": 118,
+    "color": "terra",
+    "fg": "paper",
+    "x": 540,
+    "y": 470,
+    "rot": 2
+   },
+   {
+    "type": "door",
+    "x": 230,
+    "y": 1180,
+    "w": 360,
+    "h": 760,
+    "open": 0.3
+   },
+   {
+    "type": "shreds",
+    "x": 900,
+    "y": 1200,
+    "spread": 150,
+    "fall": 620,
+    "count": 16,
+    "seed": 4,
+    "t": 0.9
+   },
+   {
+    "type": "noodle",
+    "x": 640,
+    "y": 1220,
+    "r": 250,
+    "mood": "guilty",
+    "pose": "shrug",
+    "anim": "none",
+    "talk": false
+   },
+   {
+    "type": "label",
+    "text": "(it was me)",
+    "size": 72,
+    "color": "pink",
+    "fg": "navy",
+    "x": 720,
+    "y": 700,
+    "rot": -4,
+    "font": "marker"
+   }
+  ],
+  "horizontal": [
+   {
+    "type": "door",
+    "x": 150,
+    "y": 440,
+    "w": 230,
+    "h": 460,
+    "open": 0.3
+   },
+   {
+    "type": "noodle",
+    "x": 410,
+    "y": 420,
+    "r": 130,
+    "mood": "guilty",
+    "pose": "shrug",
+    "anim": "none",
+    "talk": false
+   },
+   {
+    "type": "label",
+    "text": "WHY DID I",
+    "size": 64,
+    "color": "paper",
+    "fg": "navy",
+    "x": 910,
+    "y": 200,
+    "rot": -3
+   },
+   {
+    "type": "label",
+    "text": "COME IN HERE?",
+    "size": 70,
+    "color": "terra",
+    "fg": "paper",
+    "x": 910,
+    "y": 335,
+    "rot": 2
+   },
+   {
+    "type": "label",
+    "text": "(it was me)",
+    "size": 58,
+    "color": "pink",
+    "fg": "navy",
+    "x": 940,
+    "y": 475,
+    "rot": -4,
+    "font": "marker"
+   }
+  ]
+ }
+}

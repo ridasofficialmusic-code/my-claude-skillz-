@@ -10,6 +10,9 @@
   "lead_in": 0.05,                                          // silence before the first word (keep ~0 so frame 1 has voice)
   "hook": {"speed": 1.12, "punch": 1.15, "shake": 14, "caption_size": 96},  // scene-0 voice speed, frame-1 zoom/shake, bigger hook captions
   "scene_punch": 1.06,                                      // small zoom-in on every scene change
+  "caption_style": "marker",                                // humanised captions: handwritten phrase strips + highlighter (omit = ransom-note scraps)
+  "emphasis": ["deleted", "pickle"],                        // words drawn in terracotta in marker captions
+  "caption_y": 1330, "caption_x": 515, "caption_max_w": 880, // TikTok + YouTube safe placement (defaults)
   "mood": "curious", "bpm": 112,                            // music: curious (Am F C G) | bright (C F G Am) | night (Dm Bb F C)
   "scenes": [ { "name": "hook", "bg": "night", "lines": ["..."], "elements": [ ... ] } ],
   "thumbnail": { "bg": "night", "vertical": [ ...elements ], "horizontal": [ ...elements ] }
@@ -23,7 +26,7 @@ Canvas: 1080×1920. Coordinates are the **centre** of each element. Visual zone 
 |---|---|
 | `type` | one of the types below |
 | `x`, `y`, `rot`, `scale` | position (px), rotation (degrees, + = counter-clockwise), size multiplier |
-| `at` | when it appears, scene-relative. Number (s) or anchor: `"amygdala"` (first spoken word starting with this), `"keep#2"` (2nd occurrence), `"line2"` (start of line index 2), `"word+0.3"`, `"end-0.5"`. Omit = scene start (in scene 0 = visible from frame 1). |
+| `at` | when it appears, scene-relative. Number (s) or anchor: `"amygdala"` (first spoken word starting with this), `"keep#2"` (2nd occurrence), `"One@2"` (first match inside line 2 of the scene; use it when the word also appears earlier), `"line2"` (start of line index 2), `"word+0.3"`, `"end-0.5"`. Omit = scene start (in scene 0 = visible from frame 1). |
 | `out` | when it leaves (same anchor syntax); it shrinks out over 0.3 s |
 | `anim` | entrance: `pop` (default, stop-motion overshoot), `slide_left`, `slide_right`, `slide_up`, `slide_down`, `none` |
 | `loop` | `bob`, `spin` (+`spin_speed` deg/s), `shake` (+`shake_for` s), `pulse`, `wiggle` |
@@ -60,6 +63,12 @@ Colours: `cream paper mustard terra teal navy sky pink red green night ink skin 
 | `worm` | `r` (55), `segments` (6), `color`, `headphones` (true) | wiggling earworm mascot |
 | `crossword` | `n` (5), `cell` (90) | puzzle grid spelling EAR / WORM |
 | `shower` | `s`, `color`, `water` | shower head with falling drops (dynamic) |
+| `noodle` | `r` (150), `mood` `happy`/`guilty`/`smug`/`shock`/`think`/`sad`, `pose` `idle`/`wave`/`point`/`point_left`/`shrug`/`hold`/`think`/`walk`, `hold` `pickle`/`note`/`sign` (+`sign` text), `look` [x,y], `talk` (true) | **The mascot.** Lip-syncs to the voice, blinks, and bounces while talking. Change pose or mood by stacking elements with `at`/`out` and `anim: "none"` (instant stop-motion swaps). Feet sit about 1.45r below `y`. |
+| `door` | `w`, `h`, `open` (0–1) or `swing` [from, to, seconds], `color`, `frame`, `inside` | hinged paper door |
+| `pickle` | `r`, `face` | standalone pickle (Noodle can also `hold` one) |
+| `shreds` | `spread`, `fall`, `count`, `colors`, `seed` | falling torn paper; `y` = start point + fall/2 |
+| `scissors` | `s`, `snip` (true) | snipping scissors |
+| `box` | `part` `back`/`front`, `w`, `h`, `text`, `color` | put sliding items between the back and front to drop them "into" the box |
 | `calendar` | `top`, `text`, `w`, `h`, `color` | tear-off calendar page |
 
 Elements draw in list order (later = on top). Need a new prefab? Add a function to `scripts/render.py` with `@prefab("name")` (or `dynamic=True` if it animates). Build it from `Canvas.blob/rect/poly/line/text` so it keeps the torn-paper look.
