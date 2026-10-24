@@ -68,7 +68,8 @@ def main(script_path, out):
     gap_line, gap_scene = spec.get("gap_line", 0.36), spec.get("gap_scene", 0.62)
     t = spec.get("lead_in", 0.05); chunks = [np.zeros(int(SR * t))]; lines = []  # near-zero lead-in: the voice starts on frame 1
     for si, sc in enumerate(spec["scenes"]):
-        for li, txt in enumerate(sc["lines"]):
+        for li, item in enumerate(sc["lines"]):
+            txt, pause = (item["text"], item.get("pause")) if isinstance(item, dict) else (item, None)  # {"text", "pause"} = custom beat after a line
             sp = spec.get("hook", {}).get("speed", speed) if si == 0 else speed  # hook lines can run hotter
             a, _ = k.create(txt, voice=voice, speed=sp, lang="en-us")
             idx = np.where(np.abs(a) > 0.01)[0]; a = a[max(idx[0] - 240, 0):idx[-1] + 480]
@@ -76,7 +77,7 @@ def main(script_path, out):
             lines.append({"scene": si, "text": txt, "start": round(t, 3), "end": round(t + d, 3),
                           "words": word_times(txt, t, t + d, a)})
             last = li == len(sc["lines"]) - 1
-            gap = gap_scene if (last or txt.endswith(("?", ":"))) else gap_line
+            gap = pause if pause is not None else gap_scene if (last or txt.endswith(("?", ":"))) else gap_line
             chunks += [a, np.zeros(int(SR * gap))]; t += d + gap
     os.makedirs(out, exist_ok=True)
     sf.write(os.path.join(out, "voice.wav"), np.concatenate(chunks), SR)

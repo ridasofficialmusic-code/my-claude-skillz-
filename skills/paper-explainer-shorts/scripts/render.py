@@ -751,7 +751,7 @@ def draw_captions_marker(tl, t, canvas, shadow, y=1400, size=78):
     if chunks is None:
         chunks = []; cur = []
         for i, w in enumerate(words):
-            if cur and (words[cur[-1]]["line"] != w["line"] or len(cur) >= 4): chunks.append(cur); cur = []
+            if cur and (words[cur[-1]]["line"] != w["line"] or len(cur) >= tl.spec.get("caption_words", 3)): chunks.append(cur); cur = []
             cur.append(i)
             if w["w"][-1] in ",.?:!": chunks.append(cur); cur = []
         if cur: chunks.append(cur)
